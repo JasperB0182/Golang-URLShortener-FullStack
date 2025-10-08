@@ -23,6 +23,7 @@ func main() {
 	})
 
 	router.POST("/signup", controllers.Signup)
+	router.POST("/login", controllers.Login)
 
 	router.Run() // listens on 0.0.0.0:8080 by default
 }
