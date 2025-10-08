@@ -17,6 +17,7 @@ func Signup(c *gin.Context) {
 	var body struct {
 		Email    string
 		Password string
+		Name     string
 	}
 
 	if c.Bind(&body) != nil {
@@ -38,7 +39,7 @@ func Signup(c *gin.Context) {
 	}
 
 	// CREATE USER
-	user := models.User{Email: body.Email, Password: string(hash)}
+	user := models.User{Email: body.Email, Password: string(hash), Name: body.Name}
 	result := initializers.DB.Create(&user)
 
 	if result.Error != nil {
@@ -110,7 +111,39 @@ func Login(c *gin.Context) {
 }
 
 func Validate(c *gin.Context) {
+	user, _ := c.Get("user")
+
 	c.JSON(http.StatusOK, gin.H{
-		"message": "I am logged in",
+		"message": user,
 	})
+}
+
+func DeleteAccount(c *gin.Context) {
+	user, _ := c.Get("user")
+
+	u := user.(models.User)
+
+	initializers.DB.Delete(&u, u.ID)
+	// DELETE FROM users WHERE id = 10;
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "get rekt",
+	})
+
+}
+
+func ChangeName(c *gin.Context) {
+	var Name struct {
+		Name string
+	}
+
+	if err := c.BindJSON(&Name); err != nil {
+		c.JSON(400, gin.H{"error": "Invalid request"})
+		return
+	}
+
+	user, _ := c.Get("user")
+	u := user.(models.User)
+	u.Name = Name.Name
+	initializers.DB.Save(&u)
 }
