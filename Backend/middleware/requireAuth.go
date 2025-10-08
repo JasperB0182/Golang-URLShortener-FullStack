@@ -53,10 +53,8 @@ func RequireAuth(c *gin.Context) {
 		c.Next()
 
 	} else {
-		if err != nil {
-			c.AbortWithStatus(http.StatusUnauthorized)
-			return
-		}
+		c.AbortWithStatus(http.StatusUnauthorized)
+		return
 	}
 
 	// Continue
