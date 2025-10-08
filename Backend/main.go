@@ -3,6 +3,7 @@ package main
 import (
 	"keceox_modules/controllers"
 	"keceox_modules/initializers"
+	"keceox_modules/middleware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -24,6 +25,7 @@ func main() {
 
 	router.POST("/signup", controllers.Signup)
 	router.POST("/login", controllers.Login)
+	router.GET("/validate", middleware.RequireAuth, controllers.Validate)
 
 	router.Run() // listens on 0.0.0.0:8080 by default
 }
