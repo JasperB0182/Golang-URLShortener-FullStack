@@ -26,6 +26,7 @@ func main() {
 	router.POST("/signup", controllers.Signup)
 	router.POST("/login", controllers.Login)
 	router.GET("/validate", middleware.RequireAuth, controllers.Validate)
+	router.POST("/shorten", middleware.RequireAuth, controllers.ShortenURL)
 	router.DELETE("/deleteaccount", middleware.RequireAuth, controllers.DeleteAccount)
 	router.PUT("/changename", middleware.RequireAuth, controllers.ChangeName)
 
