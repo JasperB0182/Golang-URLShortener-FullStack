@@ -30,5 +30,7 @@ func main() {
 	router.DELETE("/deleteaccount", middleware.RequireAuth, controllers.DeleteAccount)
 	router.PUT("/changename", middleware.RequireAuth, controllers.ChangeName)
 
+	router.GET("/link/:id", middleware.RequireAuth, controllers.GetOriginalURL)
+
 	router.Run() // listens on 0.0.0.0:8080 by default
 }

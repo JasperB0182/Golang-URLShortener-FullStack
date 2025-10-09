@@ -55,5 +55,24 @@ func ShortenURL(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"Success": "Succesfully shortened URL!",
+		"Code":    newURL,
 	})
+}
+
+func GetOriginalURL(c *gin.Context) {
+	id := c.Param("id")
+
+	fmt.Println(id)
+
+	var url_mapping models.Url_mappings
+	initializers.DB.First(&url_mapping, "Short_Code = ?", id)
+
+	if url_mapping.ID == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Invalid link",
+		})
+		return
+	}
+
+	c.Redirect(http.StatusFound, url_mapping.FullURL)
 }
