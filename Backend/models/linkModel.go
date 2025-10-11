@@ -9,4 +9,5 @@ type Url_mappings struct {
 	ShortCode string `gorm:"uniqueIndex"`
 	FullURL   string
 	CreatedAt time.Time
+	Enabled   bool
 }

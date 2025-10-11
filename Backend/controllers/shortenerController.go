@@ -46,7 +46,7 @@ func ShortenURL(c *gin.Context) {
 
 	newURL := generateShortenedURL(8)
 
-	ShortenedURL := models.Url_mappings{UserID: u.ID, ShortCode: newURL, FullURL: req.URL, CreatedAt: time.Now()}
+	ShortenedURL := models.Url_mappings{UserID: u.ID, ShortCode: newURL, FullURL: req.URL, CreatedAt: time.Now(), Enabled: true}
 
 	result := initializers.DB.Create(&ShortenedURL)
 
@@ -73,12 +73,60 @@ func GetOriginalURL(c *gin.Context) {
 
 	if url_mapping.ID == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Invalid link",
+			"error": "URL is currently disabled or doesn't exist.",
 		})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"URL": url_mapping.FullURL,
-	})
+	if url_mapping.Enabled == true {
+		c.JSON(http.StatusOK, gin.H{
+			"URL": url_mapping.FullURL,
+		})
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "URL is currently disabled or doesn't exist.",
+		})
+		return
+	}
+
+}
+
+func DisableURL(c *gin.Context) {
+	id := c.Param("id")
+
+	user, _ := c.Get("user")
+
+	u := user.(models.User)
+
+	var url_mapping models.Url_mappings
+	initializers.DB.First(&url_mapping, "Short_Code = ?", id)
+
+	if url_mapping.ID == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "URL is not yours, doesn't exist or is already disabled.",
+		})
+		return
+	}
+
+	if u.ID == url_mapping.UserID {
+		if !url_mapping.Enabled {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": "URL is not yours, doesn't exist or is already disabled.",
+			})
+			return
+		}
+
+		url_mapping.Enabled = false
+		initializers.DB.Save(url_mapping)
+		c.JSON(http.StatusOK, gin.H{
+			"Message": "Succesfully disabled the URL permanently!",
+		})
+
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "URL is not yours, doesn't exist or is already disabled.",
+		})
+		return
+	}
+
 }
