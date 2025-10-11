@@ -27,6 +27,10 @@ func generateShortenedURL(length int) string {
 }
 
 func ShortenURL(c *gin.Context) {
+	user, _ := c.Get("user")
+
+	u := user.(models.User)
+
 	var req struct {
 		URL string
 	}
@@ -42,7 +46,7 @@ func ShortenURL(c *gin.Context) {
 
 	newURL := generateShortenedURL(8)
 
-	ShortenedURL := models.Url_mappings{ShortCode: newURL, FullURL: req.URL, CreatedAt: time.Now()}
+	ShortenedURL := models.Url_mappings{UserID: u.ID, ShortCode: newURL, FullURL: req.URL, CreatedAt: time.Now()}
 
 	result := initializers.DB.Create(&ShortenedURL)
 
@@ -74,5 +78,7 @@ func GetOriginalURL(c *gin.Context) {
 		return
 	}
 
-	c.Redirect(http.StatusFound, url_mapping.FullURL)
+	c.JSON(http.StatusOK, gin.H{
+		"URL": url_mapping.FullURL,
+	})
 }
