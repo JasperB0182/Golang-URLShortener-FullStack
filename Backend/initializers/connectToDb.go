@@ -1,7 +1,9 @@
 package initializers
 
 import (
+	"fmt"
 	"os"
+	"time"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -17,4 +19,6 @@ func ConnectToDb() {
 	if err != nil {
 		panic("Failed to connect to db!!")
 	}
+
+	fmt.Println(time.Now().UTC().Format(time.RFC3339Nano))
 }

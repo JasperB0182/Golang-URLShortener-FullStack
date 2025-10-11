@@ -46,7 +46,8 @@ func ShortenURL(c *gin.Context) {
 	}
 
 	var req struct {
-		URL string
+		URL        string
+		ExpiryDate time.Time
 	}
 
 	if c.BindJSON(&req) != nil {
@@ -60,7 +61,12 @@ func ShortenURL(c *gin.Context) {
 
 	newURL := generateShortenedURL(8)
 
-	ShortenedURL := models.Url_mappings{UserID: u.ID, ShortCode: newURL, FullURL: req.URL, CreatedAt: time.Now(), Enabled: true}
+	if req.ExpiryDate.Before(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)) {
+		fmt.Println("help")
+		req.ExpiryDate = time.Now().Add(time.Hour * 999999)
+	}
+
+	ShortenedURL := models.Url_mappings{UserID: u.ID, ShortCode: newURL, FullURL: req.URL, CreatedAt: time.Now(), Enabled: true, ExpiryDate: req.ExpiryDate}
 
 	result := initializers.DB.Create(&ShortenedURL)
 
@@ -92,7 +98,14 @@ func GetOriginalURL(c *gin.Context) {
 		return
 	}
 
-	if url_mapping.Enabled == true {
+	if url_mapping.ExpiryDate.Before(time.Now()) {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "URL has expired.",
+		})
+		return
+	}
+
+	if url_mapping.Enabled {
 		c.JSON(http.StatusOK, gin.H{
 			"URL": url_mapping.FullURL,
 		})
