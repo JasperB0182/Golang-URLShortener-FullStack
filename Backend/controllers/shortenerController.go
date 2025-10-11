@@ -27,9 +27,23 @@ func generateShortenedURL(length int) string {
 }
 
 func ShortenURL(c *gin.Context) {
+	const maxAllowedURLS = 10
+
 	user, _ := c.Get("user")
 
 	u := user.(models.User)
+
+	var mappings []models.Url_mappings
+	databaseQuery := initializers.DB.Where("user_id = ? AND Enabled = true", u.ID).Find(&mappings)
+
+	fmt.Println(databaseQuery.RowsAffected)
+
+	if databaseQuery.RowsAffected >= maxAllowedURLS {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "You have reached your maximum URLS! Delete some to get more.",
+		})
+		return
+	}
 
 	var req struct {
 		URL string
