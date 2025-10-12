@@ -62,7 +62,6 @@ func ShortenURL(c *gin.Context) {
 	newURL := generateShortenedURL(8)
 
 	if req.ExpiryDate.Before(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)) {
-		fmt.Println("help")
 		req.ExpiryDate = time.Now().Add(time.Hour * 999999)
 	}
 

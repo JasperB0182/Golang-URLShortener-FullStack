@@ -5,4 +5,5 @@ import "keceox_modules/models"
 func SyncDatabase() {
 	DB.AutoMigrate(&models.User{})
 	DB.AutoMigrate(&models.Url_mappings{})
+	DB.AutoMigrate(&models.UserRole{})
 }
