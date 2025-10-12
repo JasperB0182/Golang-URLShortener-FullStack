@@ -37,5 +37,7 @@ func main() {
 
 	router.PUT("/disable/:id", middleware.RequireAuth, controllers.DisableURL)
 
+	router.GET("/getactive", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminSeeAllActiveURLS)
+
 	router.Run() // listens on 0.0.0.0:8080 by default
 }
