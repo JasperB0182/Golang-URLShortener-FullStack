@@ -5,7 +5,9 @@ import (
 	"keceox_modules/initializers"
 	"keceox_modules/middleware"
 	"keceox_modules/seeders"
+	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -20,6 +22,15 @@ func init() {
 func main() {
 	router := gin.Default()
 
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:4200"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
+
 	router.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
@@ -33,7 +44,7 @@ func main() {
 	router.DELETE("/deleteaccount", middleware.RequireAuth, controllers.DeleteAccount)
 	router.PUT("/changename", middleware.RequireAuth, controllers.ChangeName)
 
-	router.GET("/link/:id", middleware.RequireAuth, controllers.GetOriginalURL)
+	router.GET("/link/:id", controllers.GetOriginalURL)
 
 	router.PUT("/disable/:id", middleware.RequireAuth, controllers.DisableURL)
 
