@@ -1,0 +1,15 @@
+<form class="Login" (ngSubmit)="login()">
+  <input type="text" placeholder="email pls" [(ngModel)]="Email" name="email pls">
+  <input type="text" placeholder="wachtwoord pls" [(ngModel)]="Password" name="wachtwoord pls">
+  <button type="submit">Wow login!</button>
+  <p>{{SuccessLogin}}</p>
+  <p>{{ErrorLogin}}</p>
+</form>
+
+<form class="Url-shortener" (ngSubmit)="shortenURL()">
+  <input type="text" placeholder="URL graag ty" [(ngModel)]="inputURL" name="url pls">
+  <input type="date" [(ngModel)]="expiryDate" name="expiryDate">
+  <button type="submit">Wow stuur de url</button>
+  <p>{{newURL}}</p>
+  <p>{{Error}}</p>
+</form>
