@@ -50,6 +50,8 @@ func main() {
 
 	router.PUT("/disable/:id", middleware.RequireAuth, controllers.DisableURL)
 
+	router.GET("/admincheck", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminCheck)
+
 	router.GET("/getactive", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminSeeAllActiveURLS)
 	router.PUT("/admindisableurl/:id", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminDisableURL)
 
