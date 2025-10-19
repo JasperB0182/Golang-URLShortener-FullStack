@@ -1,7 +1,8 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {LoginModel} from "../models/login-model";
-import {BehaviorSubject, Observable, tap} from "rxjs";
+import {BehaviorSubject, catchError, Observable, of, tap} from "rxjs";
+import {map} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,9 @@ export class AuthService {
   protected httpClient = inject(HttpClient)
   private loggedIn = new BehaviorSubject<boolean>(false);
   public isLoggedIn$ = this.loggedIn.asObservable();
+
+  private admin = new BehaviorSubject<boolean>(false);
+  public isAdmin$ = this.admin.asObservable();
 
   constructor() {
     this.checkLoginStatus();
@@ -22,7 +26,9 @@ export class AuthService {
       logindata,
       { withCredentials: true }
     ).pipe(
-      tap(() => this.loggedIn.next(true))
+      tap(() => { this.loggedIn.next(true)
+      this.checkLoginStatus()
+      })
     );
   }
 
@@ -32,7 +38,9 @@ export class AuthService {
       registerdata,
       { withCredentials: true }
     ).pipe(
-      tap(() => this.loggedIn.next(true))
+      tap(() => { this.loggedIn.next(true)
+        this.checkLoginStatus()
+      })
     );
   }
 
@@ -44,6 +52,14 @@ export class AuthService {
       next: () => this.loggedIn.next(true),
       error: () => this.loggedIn.next(false)
     });
+
+    this.httpClient.get<any>(
+      "http://localhost:8080/admincheck",
+      { withCredentials: true }
+    ).subscribe({
+      next: () => this.admin.next(true),
+      error: () => this.admin.next(false)
+    });
   }
 
   logout(): void {
@@ -51,11 +67,23 @@ export class AuthService {
       "http://localhost:8080/logout", {},
       { withCredentials: true }
     ).subscribe({
-      next: () => this.loggedIn.next(false),
-      error: () => this.loggedIn.next(false)
+      next: () => {
+        this.loggedIn.next(false)
+        this.admin.next(false)
+      },
+      error: () => {
+        this.loggedIn.next(false)
+        this.admin.next(false)
+      }
     })
   }
 
+  checkAdminStatus(): Observable<boolean> {
+    return this.httpClient.get<any>("http://localhost:8080/admincheck", { withCredentials: true }).pipe(
+      map(() => true),
+      catchError(() => of(false))
+    );
+  }
 }
 
 
