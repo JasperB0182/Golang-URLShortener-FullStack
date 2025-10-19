@@ -17,7 +17,10 @@ func RequireAuth(c *gin.Context) {
 	tokenString, err := c.Cookie("Auth")
 
 	if err != nil {
-		c.AbortWithStatus(http.StatusUnauthorized)
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "You are not logged in.",
+		})
+		c.Abort()
 		return
 	}
 
@@ -33,7 +36,10 @@ func RequireAuth(c *gin.Context) {
 	if claims, ok := token.Claims.(jwt.MapClaims); ok {
 		// Check the exp
 		if float64(time.Now().Unix()) > claims["exp"].(float64) {
-			c.AbortWithStatus(http.StatusUnauthorized)
+			c.JSON(http.StatusUnauthorized, gin.H{
+				"error": "Your login has expired",
+			})
+			c.Abort()
 			return
 		}
 
@@ -42,7 +48,10 @@ func RequireAuth(c *gin.Context) {
 		initializers.DB.First(&user, claims["sub"])
 
 		if user.ID == 0 {
-			c.AbortWithStatus(http.StatusUnauthorized)
+			c.JSON(http.StatusUnauthorized, gin.H{
+				"error": "Your login has expired",
+			})
+			c.Abort()
 			return
 		}
 

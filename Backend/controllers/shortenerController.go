@@ -156,3 +156,18 @@ func DisableURL(c *gin.Context) {
 	}
 
 }
+
+func GetAllMyURLS(c *gin.Context) {
+	user, _ := c.Get("user")
+
+	u := user.(models.User)
+
+	var mappings []models.Url_mappings
+	err := initializers.DB.Where("Enabled = ? AND user_id = ?", true, u.ID).Find(&mappings)
+	fmt.Println(err)
+
+	c.JSON(http.StatusOK, gin.H{
+		"Code": mappings,
+	})
+
+}
