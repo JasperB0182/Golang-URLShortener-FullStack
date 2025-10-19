@@ -1,0 +1,27 @@
+<body>
+  <h1>My active URLs:</h1>
+  <table class="url-table">
+    <thead>
+    <tr>
+      <th>Short Code</th>
+      <th>Full URL</th>
+      <th>Created At</th>
+      <th>Expiry Date</th>
+      <th>Disable</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let url of myURLS">
+      <td>
+        <a [href]="'http://localhost:4200/rd/' + url.ShortCode">http://localhost:4200/rd/{{ url.ShortCode }}</a>
+      </td>
+      <td><a href="{{ url.FullURL }}" target="_blank">{{ url.FullURL }}</a></td>
+      <td>{{ url.CreatedAt | date}}</td>
+      <td>{{ url.ExpiryDate | date}}</td>
+      <td>
+          <button (click)="disableURL(url.ShortCode)">Disable</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</body>

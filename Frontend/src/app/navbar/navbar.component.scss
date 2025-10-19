@@ -1,0 +1,45 @@
+* {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+header {
+  background-color: #1e293b;
+  padding: 1.5vh 2vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+}
+
+header img {
+  width: 50px;
+  height: auto;
+  cursor: pointer;
+}
+
+header ul {
+  list-style: none;
+  display: flex;
+  gap: 2vw;
+}
+
+header li {
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+  padding: 0.5vw 1vw;
+  border-radius: 5px;
+}
+
+header li:hover {
+  background-color: navajowhite;
+  color: black;
+}

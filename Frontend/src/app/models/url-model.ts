@@ -1,5 +1,5 @@
 
 export interface UrlModel {
   URL: string,
-  ExpiryDate: string
+  ExpiryDate?: string
 }

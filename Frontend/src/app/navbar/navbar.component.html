@@ -1,0 +1,10 @@
+<header>
+  <img  [routerLink]="['/']" src="https://img.freepik.com/vrije-vector/vogel-kleurrijke-logo-verloop-vector_343694-1365.jpg?semt=ais_hybrid&w=740&q=80">
+  <ul>
+    <li *ngIf="!(authService.isLoggedIn$ | async)" [routerLink]="['/login']">Login</li>
+    <li *ngIf="!(authService.isLoggedIn$ | async)" [routerLink]="['/register']">Register</li>
+    <li *ngIf="(authService.isLoggedIn$ | async)" [routerLink]="['/profile']">Profile</li>
+    <li *ngIf="(authService.isLoggedIn$ | async)" (click)="authService.logout()">Logout</li>
+
+  </ul>
+</header>

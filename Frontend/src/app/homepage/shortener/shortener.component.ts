@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {ShortenerService} from "../../services/shortener-service.service";
-import {LoginService} from "../../services/login.service";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-shortener',
@@ -10,7 +10,7 @@ import {LoginService} from "../../services/login.service";
     FormsModule
   ],
   templateUrl: './shortener.component.html',
-  styleUrl: './shortener.component.scss'
+  styleUrls: ['./shortener.component.scss']
 })
 export class ShortenerComponent {
 
@@ -21,37 +21,35 @@ export class ShortenerComponent {
   protected Error = ""
 
   protected shortenService = inject(ShortenerService)
-  protected loginService = inject(LoginService)
-
-  protected Email = ""
-  protected Password = ""
-
-  protected ErrorLogin = ""
-  protected SuccessLogin = ""
-
-  protected login(){
-    const loginData = {Email: this.Email, Password: this.Password}
-    this.loginService.login(loginData).subscribe({
-      next: (res) => {
-        this.SuccessLogin = "Succesfully logged in!"
-      },
-      error: (error) => {
-        this.ErrorLogin = error.message;
-      }
-    })
-  }
+  protected authService = inject(AuthService)
 
   protected shortenURL(){
-    const expiry = new Date(this.expiryDate)
-    const shortenData = {URL: this.inputURL, ExpiryDate: expiry.toISOString()}
-    this.shortenService.shorten(shortenData).subscribe({
-      next: (res) =>{
-        this.newURL = "New URL code: " + "http://localhost:4200/rd/" +  res.Code
-      },
-      error: (error) => {
-        this.Error = error.error;
-      }
-    })
+    if (this.expiryDate){
+      var expiry = new Date(this.expiryDate)
+      const shortenData = {URL: this.inputURL, ExpiryDate: expiry.toISOString()}
+      this.shortenService.shorten(shortenData).subscribe({
+        next: (res) =>{
+          this.newURL = "New URL: " + "http://localhost:4200/rd/" +  res.Code
+        },
+        error: (error) => {
+          this.Error = error.statusText;
+          console.log(this.Error)
+        }
+      })
+    } else {
+      const shortenData = {URL: this.inputURL}
+      this.shortenService.shorten(shortenData).subscribe({
+        next: (res) =>{
+          this.newURL = "New URL code: " + "http://localhost:4200/rd/" +  res.Code
+        },
+        error: (error) => {
+          this.Error = error.error.error; //Ik weet het.... heel prachtig
+          console.log(this.Error)
+        }
+      })
+    }
+
+
 
   }
 

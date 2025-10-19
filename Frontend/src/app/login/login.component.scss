@@ -1,0 +1,68 @@
+.Login {
+  max-width: 400px;
+  margin: 80px auto;
+  padding: 40px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: center;
+}
+
+
+.Login input[type="text"],
+.Login input[type="password"], {
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.Login input[type="text"],
+.Login input[type="password"]:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+  outline: none;
+}
+
+
+.Login button {
+  padding: 12px;
+  background-color: #4a90e2;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.Login button:hover {
+  background-color: #357ABD;
+}
+
+
+.Login p {
+  font-size: 14px;
+  text-align: center;
+  margin: 0;
+}
+
+.Login p:nth-child(4) {
+  color: green;
+}
+
+.Login p:nth-child(5) {
+  color: red;
+}
+
+
+.Login input::placeholder {
+  color: #aaa;
+  font-style: italic;
+}
