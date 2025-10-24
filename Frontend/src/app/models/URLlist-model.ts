@@ -13,6 +13,7 @@ export interface URLItem {
   CreatedAt: string;
   Enabled: boolean;
   ExpiryDate: string;
+  UsageCount: number;
 }
 
 export interface URLListResponse {

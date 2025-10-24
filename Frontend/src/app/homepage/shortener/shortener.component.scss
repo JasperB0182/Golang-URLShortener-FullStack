@@ -24,6 +24,12 @@ body form {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+.ErrorMessage {
+  color: red;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
 .Url-shortener input[type="text"],
 .Url-shortener input[type="date"] {
   width: 100%;

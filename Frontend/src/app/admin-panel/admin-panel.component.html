@@ -1,0 +1,57 @@
+<body>
+  <h1>Active URLs:</h1>
+  <table class="url-table">
+    <thead>
+    <tr>
+      <th>Created by</th>
+      <th>Short Code</th>
+      <th>Full URL</th>
+      <th>Created At</th>
+      <th>Expiry Date</th>
+      <th>Usage count</th>
+      <th>Enabled?</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let url of myURLS">
+      <td>{{url.User.Email}}</td>
+      <td>
+        <a [href]="'http://localhost:4200/rd/' + url.ShortCode">http://localhost:4200/rd/{{ url.ShortCode }}</a>
+      </td>
+      <td><a href="{{ url.FullURL }}" target="_blank">{{ url.FullURL }}</a></td>
+      <td>{{ url.CreatedAt | date}}</td>
+      <td>{{ url.ExpiryDate | date}}</td>
+      <td>{{ url.UsageCount }}</td>
+      <td>
+        <button (click)="disableURL(url.ShortCode)">Disable</button>
+      </td>
+    </tr>
+    </tbody>
+  </table><h1>Active accounts:</h1>
+  <table class="url-table">
+    <thead>
+    <tr>
+      <th>User ID</th>
+      <th>Email</th>
+      <th>Created At</th>
+      <th>Name</th>
+      <th>Role</th>
+      <th>Disable account</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let user of myAccounts.Users">
+      <td>{{user.ID}}</td>
+      <td>
+        {{user.Email}}
+      </td>
+      <td>{{ user.CreatedAt | date}}</td>
+      <td>{{user.Name}}</td>
+      <td>{{user.UserRole.Role}}</td>
+      <td>
+        <button (click)="disableAccountAdmin(String(user.ID))">Disable Account</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</body>
