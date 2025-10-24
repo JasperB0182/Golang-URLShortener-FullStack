@@ -53,6 +53,8 @@ func main() {
 	router.GET("/admincheck", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminCheck)
 
 	router.GET("/getactive", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminSeeAllActiveURLS)
+	router.GET("/getusers", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminSeeAllUsers)
+	router.DELETE("/deleteaccountadmin/:id", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminDeleteAccount)
 	router.PUT("/admindisableurl/:id", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminDisableURL)
 
 	router.Run() // listens on 0.0.0.0:8080 by default

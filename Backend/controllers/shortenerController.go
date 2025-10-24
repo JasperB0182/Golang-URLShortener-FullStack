@@ -163,7 +163,7 @@ func GetAllMyURLS(c *gin.Context) {
 	u := user.(models.User)
 
 	var mappings []models.Url_mappings
-	err := initializers.DB.Where("Enabled = ? AND user_id = ?", true, u.ID).Find(&mappings)
+	err := initializers.DB.Where("Enabled = ? AND user_id = ? AND expiry_date > ?", true, u.ID, time.Now()).Find(&mappings)
 	fmt.Println(err)
 
 	c.JSON(http.StatusOK, gin.H{

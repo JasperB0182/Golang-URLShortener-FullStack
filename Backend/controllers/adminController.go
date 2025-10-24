@@ -4,18 +4,44 @@ import (
 	"keceox_modules/initializers"
 	"keceox_modules/models"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
 func AdminSeeAllActiveURLS(c *gin.Context) {
 	var mappings []models.Url_mappings
-	err := initializers.DB.Where("Enabled = true").Find(&mappings)
+	err := initializers.DB.Preload("User").Preload("User.UserRole").Where("Enabled = true AND expiry_date > ?", time.Now()).Find(&mappings)
 	println(err)
 
 	c.JSON(http.StatusOK, gin.H{
 		"Code": mappings,
 	})
+}
+
+func AdminSeeAllUsers(c *gin.Context) {
+	var users []models.User
+	err := initializers.DB.Preload("UserRole").Find(&users)
+	println(err)
+
+	c.JSON(http.StatusOK, gin.H{
+		"Users": users,
+	})
+}
+
+func AdminDeleteAccount(c *gin.Context) {
+	id := c.Param("id")
+
+	var u models.User
+	initializers.DB.First(&u, "id = ?", id)
+
+	initializers.DB.Delete(&u, u.ID)
+	// DELETE FROM users WHERE id = 10;
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "get rekt lol",
+	})
+
 }
 
 func AdminDisableURL(c *gin.Context) {
