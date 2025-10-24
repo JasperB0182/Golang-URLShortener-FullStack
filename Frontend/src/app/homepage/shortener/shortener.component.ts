@@ -2,12 +2,15 @@ import {Component, inject} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {ShortenerService} from "../../services/shortener-service.service";
 import {AuthService} from "../../services/auth.service";
+import {AsyncPipe, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-shortener',
   standalone: true,
   imports: [
-    FormsModule
+    FormsModule,
+    NgIf,
+    AsyncPipe
   ],
   templateUrl: './shortener.component.html',
   styleUrls: ['./shortener.component.scss']
@@ -24,11 +27,16 @@ export class ShortenerComponent {
   protected authService = inject(AuthService)
 
   protected tomorrow : any;
+  protected inamonth: any;
 
   constructor() {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     this.tomorrow = tomorrow.toISOString().split('T')[0];
+
+    const inamonth = new Date();
+    inamonth.setMonth(inamonth.getMonth() + 1);
+    this.inamonth = inamonth.toISOString().split('T')[0];
   }
 
   protected shortenURL(){

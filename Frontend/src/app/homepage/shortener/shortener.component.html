@@ -3,7 +3,8 @@
     <h1>URL shortener</h1>
     <h2>Hier komt dan context over de URL shortener blah blah blah lorem ipsum ofzo</h2>
     <input type="text" placeholder="Voer hier uw URL in" [(ngModel)]="inputURL" name="url" pattern="https://.*" required>
-    <input type="date" [(ngModel)]="expiryDate" name="expiryDate" [min]="tomorrow"> *datum is optioneel
+    <input *ngIf="!(authService.isAdmin$ | async)" type="date" [(ngModel)]="expiryDate" name="expiryDate" [max]="inamonth" [min]="tomorrow">
+    <input *ngIf="(authService.isAdmin$ | async)" type="date" [(ngModel)]="expiryDate" name="expiryDate" [min]="tomorrow"> *datum is optioneel
     <button type="submit">Shorten</button>
     <p>{{newURL}}</p>
     <p class="ErrorMessage">{{Error}}</p>
