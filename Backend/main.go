@@ -1,10 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"keceox_modules/controllers"
 	"keceox_modules/initializers"
 	"keceox_modules/middleware"
 	"keceox_modules/seeders"
+	"os"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -21,6 +23,16 @@ func init() {
 
 func main() {
 	router := gin.Default()
+
+	info, err := os.Stat("logs.txt")
+	if os.IsNotExist(err) {
+		LogFile, error := os.Create("logs.txt")
+		fmt.Println(info)
+		if error != nil {
+		}
+
+		defer LogFile.Close()
+	}
 
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:4200"},
