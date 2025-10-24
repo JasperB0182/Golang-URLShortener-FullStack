@@ -1,0 +1,51 @@
+body {
+  margin-top: 6rem;
+}
+
+.url-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  margin-top: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.url-table th, .url-table td {
+  border: 1px solid #ddd;
+  padding: 12px 15px;
+  text-align: left;
+}
+
+.url-table th {
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+}
+
+.url-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.url-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.url-table a {
+  color: #1a73e8;
+  text-decoration: none;
+}
+
+.url-table a:hover {
+  text-decoration: underline;
+}
+
+.enabled {
+  color: green;
+  font-weight: bold;
+}
+
+.disabled {
+  color: red;
+  font-weight: bold;
+}
+
