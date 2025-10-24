@@ -8,6 +8,7 @@
       <th>Full URL</th>
       <th>Created At</th>
       <th>Expiry Date</th>
+      <th>Usage count</th>
       <th>Enabled?</th>
     </tr>
     </thead>
@@ -20,6 +21,7 @@
       <td><a href="{{ url.FullURL }}" target="_blank">{{ url.FullURL }}</a></td>
       <td>{{ url.CreatedAt | date}}</td>
       <td>{{ url.ExpiryDate | date}}</td>
+      <td>{{ url.UsageCount }}</td>
       <td>
         <button (click)="disableURL(url.ShortCode)">Disable</button>
       </td>

@@ -23,7 +23,16 @@ export class ShortenerComponent {
   protected shortenService = inject(ShortenerService)
   protected authService = inject(AuthService)
 
+  protected tomorrow : any;
+
+  constructor() {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    this.tomorrow = tomorrow.toISOString().split('T')[0];
+  }
+
   protected shortenURL(){
+    this.Error = "";
     if (this.expiryDate){
       var expiry = new Date(this.expiryDate)
       const shortenData = {URL: this.inputURL, ExpiryDate: expiry.toISOString()}
