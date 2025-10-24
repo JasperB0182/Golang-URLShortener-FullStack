@@ -1,8 +1,9 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnDestroy} from '@angular/core';
 import {DatePipe, NgForOf} from "@angular/common";
 import {ShortenerService} from "../services/shortener-service.service";
 import {URLItem, URLListResponse} from "../models/URLlist-model";
 import {UsersResponse} from "../models/user-model";
+import {interval, switchMap} from "rxjs";
 
 @Component({
   selector: 'app-admin-panel',
@@ -14,29 +15,47 @@ import {UsersResponse} from "../models/user-model";
   templateUrl: './admin-panel.component.html',
   styleUrl: './admin-panel.component.scss'
 })
-export class AdminPanelComponent {
+export class AdminPanelComponent implements OnDestroy{
   protected shortenerService = inject(ShortenerService)
 
   protected myURLS: URLItem[] = [];
   protected myAccounts!: UsersResponse;
+
+  private urlSub! : any;
 
   constructor() {
     this.getUrls()
     this.getAccounts()
   }
 
+  ngOnDestroy(){
+    this.urlSub.unsubscribe();
+  }
+
+  protected refreshUrls(){
+    this.shortenerService.getAdminURLS().subscribe({
+      next: (res: URLListResponse) => (this.myURLS = res.Code)
+    });
+  }
+
   protected getUrls(){
     this.shortenerService.getAdminURLS().subscribe({
-      next: (res: URLListResponse) => {
-        this.myURLS = res.Code;
-      }
+      next: (res: URLListResponse) => (this.myURLS = res.Code)
     });
+
+    this.urlSub = interval(5000)
+      .pipe(switchMap(() => this.shortenerService.getAdminURLS()))
+      .subscribe({
+        next: (res: URLListResponse) => {
+          this.myURLS = res.Code;
+        }
+      })
   }
 
   protected disableURL(id: string){
     this.shortenerService.disableAdminURL(id).subscribe({
       next: (res : any)=> {
-        this.getUrls()
+        this.refreshUrls()
       }
     })
   }
