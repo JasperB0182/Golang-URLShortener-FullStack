@@ -78,8 +78,19 @@ func ShortenURL(c *gin.Context) {
 
 	newURL := generateShortenedURL(8)
 
-	if req.ExpiryDate.Before(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)) {
-		req.ExpiryDate = time.Now().Add(time.Hour * 999999)
+	if u.ID == 1 {
+		if req.ExpiryDate.After(time.Now().AddDate(0, 1, 1)) {
+			req.ExpiryDate = time.Now().AddDate(0, 1, 0)
+		}
+	}
+
+	if req.ExpiryDate.Before(time.Now()) {
+		if u.RoleID == 1 {
+			req.ExpiryDate = time.Now().AddDate(0, 1, 0)
+		} else {
+			req.ExpiryDate = time.Now().Add(time.Hour * 999999)
+		}
+
 	}
 
 	ShortenedURL := models.Url_mappings{UserID: u.ID, ShortCode: newURL, FullURL: req.URL, CreatedAt: time.Now(), Enabled: true, ExpiryDate: req.ExpiryDate, UsageCount: 0}
