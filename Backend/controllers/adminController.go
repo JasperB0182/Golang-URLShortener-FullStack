@@ -1,9 +1,11 @@
 package controllers
 
 import (
+	"fmt"
 	"keceox_modules/initializers"
 	"keceox_modules/models"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -32,20 +34,35 @@ func AdminSeeAllUsers(c *gin.Context) {
 func AdminDeleteAccount(c *gin.Context) {
 	id := c.Param("id")
 
+	admin, _ := c.Get("user")
+
+	a := admin.(models.User)
+
 	var u models.User
 	initializers.DB.First(&u, "id = ?", id)
 
 	initializers.DB.Delete(&u, u.ID)
 	// DELETE FROM users WHERE id = 10;
 
+	LogFile, err := os.OpenFile("logs.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+
+	if err != nil {
+		fmt.Println("ERROR WRITING TO LOGS!")
+	}
+
+	LogFile.WriteString("[" + time.Now().Format("Jan 2, 2006 3:04pm") + "] " + "Admin " + a.Email + " has deleted account with ID: " + id + "\n")
+
 	c.JSON(http.StatusOK, gin.H{
-		"message": "get rekt lol",
+		"message": "Deleted account",
 	})
 
 }
 
 func AdminDisableURL(c *gin.Context) {
 	id := c.Param("id")
+	user, _ := c.Get("user")
+
+	u := user.(models.User)
 
 	var url_mapping models.Url_mappings
 	initializers.DB.First(&url_mapping, "Short_Code = ?", id)
@@ -66,6 +83,15 @@ func AdminDisableURL(c *gin.Context) {
 
 	url_mapping.Enabled = false
 	initializers.DB.Save(url_mapping)
+
+	LogFile, err := os.OpenFile("logs.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+
+	if err != nil {
+		fmt.Println("ERROR WRITING TO LOGS!")
+	}
+
+	LogFile.WriteString("[" + time.Now().Format("Jan 2, 2006 3:04pm") + "] " + "Admin " + u.Email + " has disabled URL with shortcode: " + id + "\n")
+
 	c.JSON(http.StatusOK, gin.H{
 		"Message": "Succesfully disabled the URL permanently!",
 	})

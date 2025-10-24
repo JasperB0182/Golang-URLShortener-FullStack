@@ -154,7 +154,7 @@ func DeleteAccount(c *gin.Context) {
 	// DELETE FROM users WHERE id = 10;
 
 	c.JSON(http.StatusOK, gin.H{
-		"message": "get rekt",
+		"message": "Deleted account",
 	})
 
 }
