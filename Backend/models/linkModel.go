@@ -11,4 +11,5 @@ type Url_mappings struct {
 	CreatedAt  time.Time
 	Enabled    bool
 	ExpiryDate time.Time
+	UsageCount float64
 }

@@ -6,6 +6,7 @@ import (
 	"keceox_modules/models"
 	"math/rand"
 	"net/http"
+	"net/url"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -59,13 +60,29 @@ func ShortenURL(c *gin.Context) {
 
 	fmt.Println(req.URL)
 
+	check, err := url.ParseRequestURI(req.URL)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Entered text is not a URL!",
+		})
+		return
+	}
+
+	if check == nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Check is empty.",
+		})
+		return
+	}
+
 	newURL := generateShortenedURL(8)
 
 	if req.ExpiryDate.Before(time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)) {
 		req.ExpiryDate = time.Now().Add(time.Hour * 999999)
 	}
 
-	ShortenedURL := models.Url_mappings{UserID: u.ID, ShortCode: newURL, FullURL: req.URL, CreatedAt: time.Now(), Enabled: true, ExpiryDate: req.ExpiryDate}
+	ShortenedURL := models.Url_mappings{UserID: u.ID, ShortCode: newURL, FullURL: req.URL, CreatedAt: time.Now(), Enabled: true, ExpiryDate: req.ExpiryDate, UsageCount: 0}
 
 	result := initializers.DB.Create(&ShortenedURL)
 
@@ -89,6 +106,10 @@ func GetOriginalURL(c *gin.Context) {
 
 	var url_mapping models.Url_mappings
 	initializers.DB.First(&url_mapping, "Short_Code = ?", id)
+
+	url_mapping.UsageCount += 1
+
+	initializers.DB.Save(url_mapping)
 
 	if url_mapping.ID == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{
