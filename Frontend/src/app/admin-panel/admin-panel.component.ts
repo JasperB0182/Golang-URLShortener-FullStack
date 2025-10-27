@@ -21,6 +21,9 @@ export class AdminPanelComponent implements OnDestroy{
   protected myURLS: URLItem[] = [];
   protected myAccounts!: UsersResponse;
 
+  protected urlDisableMessage = ""
+  protected userDisableMessage = ""
+
   private urlSub! : any;
 
   constructor() {
@@ -56,6 +59,7 @@ export class AdminPanelComponent implements OnDestroy{
     this.shortenerService.disableAdminURL(id).subscribe({
       next: (res : any)=> {
         this.refreshUrls()
+        this.urlDisableMessage = res.Message
       }
     })
   }
@@ -64,6 +68,7 @@ export class AdminPanelComponent implements OnDestroy{
     this.shortenerService.disableAdminAccount(id).subscribe({
       next: (res : any)=> {
         this.getAccounts()
+        this.userDisableMessage = res.Message
       }
     })
   }
