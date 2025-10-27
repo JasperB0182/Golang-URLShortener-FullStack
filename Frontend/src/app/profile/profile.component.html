@@ -1,4 +1,22 @@
 <body>
+  <h1>My info:</h1>
+  <table class="url-table" width="20px" id="user-info">
+    <thead>
+    <tr>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>Email: {{this.userinfo.Email}} <button (click)="changeEmail()">Change email</button></td>
+    </tr>
+    <tr>
+      <td>Name: {{this.userinfo.Name}} <button (click)="changeName()">Change name</button></td>
+    </tr>
+    <tr>
+      <td>Password: *** <button  (click)="changePassword()">Change password</button></td>
+    </tr>
+    </tbody>
+  </table>
   <h1>My active URLs:</h1>
   <table class="url-table">
     <thead>

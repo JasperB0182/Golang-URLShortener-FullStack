@@ -20,6 +20,30 @@ export class AuthService {
     this.checkLoginStatus();
   }
 
+  changeName(data : any): Observable<any> {
+    return this.httpClient.put<any>(
+      "http://localhost:8080/changename",
+      data,
+      { withCredentials: true }
+    )
+  }
+
+  changeEmail(data : any): Observable<any> {
+    return this.httpClient.put<any>(
+      "http://localhost:8080/changeemail",
+      data,
+      { withCredentials: true }
+    )
+  }
+
+  changePassword(data : any): Observable<any> {
+    return this.httpClient.put<any>(
+      "http://localhost:8080/changepassword",
+      data,
+      { withCredentials: true }
+    )
+  }
+
   login(logindata: LoginModel): Observable<any> {
     return this.httpClient.post<any>(
       "http://localhost:8080/login",
@@ -42,6 +66,13 @@ export class AuthService {
         this.checkLoginStatus()
       })
     );
+  }
+
+  getuserInfo(): Observable<any> {
+    return this.httpClient.get<any>(
+      "http://localhost:8080/validate",
+      { withCredentials: true }
+    )
   }
 
   checkLoginStatus(): void {
