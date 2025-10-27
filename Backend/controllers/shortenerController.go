@@ -35,7 +35,7 @@ func ShortenURL(c *gin.Context) {
 	u := user.(models.User)
 
 	var mappings []models.Url_mappings
-	databaseQuery := initializers.DB.Where("user_id = ? AND Enabled = true", u.ID).Find(&mappings)
+	databaseQuery := initializers.DB.Where("user_id = ? AND Enabled = ? AND expiry_date >= ?", u.ID, true, time.Now()).Find(&mappings)
 
 	fmt.Println(databaseQuery.RowsAffected)
 
