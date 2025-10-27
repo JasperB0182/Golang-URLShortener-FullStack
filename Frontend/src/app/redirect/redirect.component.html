@@ -1,1 +1,7 @@
-
+<div *ngIf="redirectError" class="Url-shortener">
+  <img src="https://content.presentermedia.com/files/clipart/00028000/28699/sad_worry_emoji_face_800_wht.jpg" width="150px">
+  <h1>Hmmm, something has gone wrong!</h1>
+  <h2>We couldn't redirect you to the page, this could be because of an expired link or the link was disabled.</h2>
+  <p>Please check the server status for more info.</p>
+  <a [routerLink]="['/']">Redirect to home page</a>
+</div>

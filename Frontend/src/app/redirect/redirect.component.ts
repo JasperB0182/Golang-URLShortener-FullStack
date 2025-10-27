@@ -1,11 +1,15 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, RouterLink} from "@angular/router";
 import {RedirectService} from "../services/redirect.service";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-redirect',
   standalone: true,
-  imports: [],
+  imports: [
+    RouterLink,
+    NgIf
+  ],
   templateUrl: './redirect.component.html',
   styleUrl: './redirect.component.scss'
 })
@@ -16,6 +20,8 @@ export class RedirectComponent implements OnInit {
 
   protected redirectService = inject(RedirectService)
 
+  protected redirectError : boolean = false
+
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
     if (this.id) {
@@ -24,7 +30,7 @@ export class RedirectComponent implements OnInit {
           window.location.href = res.URL
       },
         error: (err) => {
-          window.location.href = "google.com"
+          this.redirectError = true
         }
       })
     }
