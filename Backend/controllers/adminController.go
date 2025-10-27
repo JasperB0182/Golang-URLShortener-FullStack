@@ -108,3 +108,53 @@ func AdminDisableURL(c *gin.Context) {
 		"Message": "Succesfully disabled the URL permanently!",
 	})
 }
+
+func AdminDisableMultipleURL(c *gin.Context) {
+	var body struct {
+		Codes []string `json:"codes"`
+	}
+
+	if err := c.BindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+		return
+	}
+
+	user, _ := c.Get("user")
+	u := user.(models.User)
+
+	LogFile, err := os.OpenFile("logs.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		fmt.Println("ERROR OPENING LOG FILE!")
+	}
+	defer LogFile.Close()
+
+	var succeeded []string
+	var failed []string
+
+	for _, code := range body.Codes {
+		var url_mapping models.Url_mappings
+		initializers.DB.First(&url_mapping, "Short_Code = ?", code)
+
+		if url_mapping.ID == 0 || !url_mapping.Enabled {
+			failed = append(failed, code)
+			continue
+		}
+
+		url_mapping.Enabled = false
+		if err := initializers.DB.Save(&url_mapping).Error; err != nil {
+			failed = append(failed, code)
+			continue
+		}
+
+		succeeded = append(succeeded, code)
+
+		if LogFile != nil {
+			LogFile.WriteString("[" + time.Now().Format("Jan 2, 2006 3:04pm") + "] " + "Admin " + u.Email + " has disabled URL with shortcode: " + url_mapping.ShortCode + "\n")
+		}
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"succeeded": succeeded,
+		"failed":    failed,
+	})
+}
