@@ -23,6 +23,7 @@ func init() {
 
 func main() {
 	router := gin.Default()
+	router.Use(middleware.RateLimiter())
 
 	info, err := os.Stat("logs.txt")
 	if os.IsNotExist(err) {
