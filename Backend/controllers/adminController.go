@@ -14,7 +14,13 @@ import (
 func AdminSeeAllActiveURLS(c *gin.Context) {
 	var mappings []models.Url_mappings
 	err := initializers.DB.Preload("User").Preload("User.UserRole").Where("Enabled = true AND expiry_date > ?", time.Now()).Find(&mappings)
-	println(err)
+
+	if err.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"Error": "Couldn't retrieve codes",
+		})
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"Code": mappings,
@@ -24,7 +30,13 @@ func AdminSeeAllActiveURLS(c *gin.Context) {
 func AdminSeeAllUsers(c *gin.Context) {
 	var users []models.User
 	err := initializers.DB.Preload("UserRole").Find(&users)
-	println(err)
+
+	if err.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"Error": "Couldn't retrieve users",
+		})
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"Users": users,
