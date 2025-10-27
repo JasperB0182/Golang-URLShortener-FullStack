@@ -54,6 +54,8 @@ export class ShortenerComponent {
         },
         error: (error) => {
           this.Error = error.statusText;
+          this.newURLString = ""
+          this.urlCode = ""
           console.log(this.Error)
         }
       })
@@ -66,6 +68,8 @@ export class ShortenerComponent {
         },
         error: (error) => {
           this.Error = error.error.error; //Ik weet het.... heel prachtig
+          this.newURLString = ""
+          this.urlCode = ""
           console.log(this.Error)
         }
       })
