@@ -3,6 +3,7 @@ import {FormsModule} from "@angular/forms";
 import {ShortenerService} from "../../services/shortener-service.service";
 import {AuthService} from "../../services/auth.service";
 import {AsyncPipe, NgIf} from "@angular/common";
+import {QRCodeModule} from "angularx-qrcode";
 
 @Component({
   selector: 'app-shortener',
@@ -10,7 +11,8 @@ import {AsyncPipe, NgIf} from "@angular/common";
   imports: [
     FormsModule,
     NgIf,
-    AsyncPipe
+    AsyncPipe,
+    QRCodeModule
   ],
   templateUrl: './shortener.component.html',
   styleUrls: ['./shortener.component.scss']
@@ -20,7 +22,8 @@ export class ShortenerComponent {
   protected inputURL = ""
   protected expiryDate = ""
 
-  protected newURL = ""
+  protected newURLString = ""
+  protected urlCode = ""
   protected Error = ""
 
   protected shortenService = inject(ShortenerService)
@@ -46,7 +49,8 @@ export class ShortenerComponent {
       const shortenData = {URL: this.inputURL, ExpiryDate: expiry.toISOString()}
       this.shortenService.shorten(shortenData).subscribe({
         next: (res) =>{
-          this.newURL = "New URL: " + "http://localhost:4200/rd/" +  res.Code
+          this.newURLString = "New URL: " + "http://localhost:4200/rd/" +  res.Code
+          this.urlCode = "http://localhost:4200/rd/" + res.Code
         },
         error: (error) => {
           this.Error = error.statusText;
@@ -57,7 +61,8 @@ export class ShortenerComponent {
       const shortenData = {URL: this.inputURL}
       this.shortenService.shorten(shortenData).subscribe({
         next: (res) =>{
-          this.newURL = "New URL code: " + "http://localhost:4200/rd/" +  res.Code
+          this.newURLString = "New URL code: " + "http://localhost:4200/rd/" +  res.Code
+          this.urlCode = "http://localhost:4200/rd/" + res.Code
         },
         error: (error) => {
           this.Error = error.error.error; //Ik weet het.... heel prachtig
