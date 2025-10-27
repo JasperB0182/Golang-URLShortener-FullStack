@@ -1,9 +1,11 @@
 package controllers
 
 import (
+	"fmt"
 	"keceox_modules/initializers"
 	"keceox_modules/models"
 	"net/http"
+	"net/mail"
 	"os"
 	"time"
 
@@ -141,7 +143,7 @@ func Validate(c *gin.Context) {
 	user, _ := c.Get("user")
 
 	c.JSON(http.StatusOK, gin.H{
-		"message": user,
+		"user": user,
 	})
 }
 
@@ -169,8 +171,93 @@ func ChangeName(c *gin.Context) {
 		return
 	}
 
+	if len(Name.Name) < 2 || len(Name.Name) > 15 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Name does not meet requirements.",
+		})
+		return
+	}
+
 	user, _ := c.Get("user")
 	u := user.(models.User)
 	u.Name = Name.Name
 	initializers.DB.Save(&u)
+}
+
+func ChangeEmail(c *gin.Context) {
+	var Email struct {
+		Email string
+	}
+
+	if err := c.BindJSON(&Email); err != nil {
+		c.JSON(400, gin.H{"error": "Invalid request"})
+		return
+	}
+
+	_, newerr := mail.ParseAddress(Email.Email)
+
+	if newerr != nil {
+		c.JSON(400, gin.H{"error": "Invalid email address"})
+		return
+	}
+
+	var newuser models.User
+	res := initializers.DB.First(&newuser, "email = ?", Email.Email)
+
+	if res.RowsAffected > 0 {
+		c.JSON(400, gin.H{"error": "User with this email already exists"})
+		return
+	}
+
+	user, _ := c.Get("user")
+	u := user.(models.User)
+
+	u.Email = Email.Email
+	initializers.DB.Save(&u)
+
+}
+
+func ChangePassword(c *gin.Context) {
+	var body struct {
+		OldPassword string
+		NewPassword string
+	}
+
+	if err := c.BindJSON(&body); err != nil {
+		c.JSON(400, gin.H{"error": "Invalid request"})
+		return
+	}
+
+	if len(body.NewPassword) < 4 || len(body.NewPassword) > 20 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Password does not meet requirements.",
+		})
+		return
+	}
+
+	user, _ := c.Get("user")
+	u := user.(models.User)
+
+	err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(body.OldPassword))
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Invalid Email/Password!",
+		})
+		fmt.Println(err)
+		return
+	}
+
+	hash, err := bcrypt.GenerateFromPassword([]byte(body.NewPassword), 10)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "FAILED PASSWORD HASH!",
+		})
+		return
+	}
+
+	u.Password = string(hash)
+	initializers.DB.Save(&u)
+
 }

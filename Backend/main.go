@@ -57,6 +57,8 @@ func main() {
 	router.POST("/shorten", middleware.RequireAuth, controllers.ShortenURL)
 	router.DELETE("/deleteaccount", middleware.RequireAuth, controllers.DeleteAccount)
 	router.PUT("/changename", middleware.RequireAuth, controllers.ChangeName)
+	router.PUT("/changeemail", middleware.RequireAuth, controllers.ChangeEmail)
+	router.PUT("/changepassword", middleware.RequireAuth, controllers.ChangePassword)
 
 	router.GET("/link/:id", controllers.GetOriginalURL)
 	router.GET("/getmyurls", middleware.RequireAuth, controllers.GetAllMyURLS)
