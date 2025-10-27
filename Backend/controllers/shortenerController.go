@@ -37,15 +37,6 @@ func ShortenURL(c *gin.Context) {
 	var mappings []models.Url_mappings
 	databaseQuery := initializers.DB.Where("user_id = ? AND Enabled = ? AND expiry_date >= ?", u.ID, true, time.Now()).Find(&mappings)
 
-	fmt.Println(databaseQuery.RowsAffected)
-
-	if databaseQuery.RowsAffected >= maxAllowedURLS {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "You have reached your maximum URLS! Delete some to get more.",
-		})
-		return
-	}
-
 	var req struct {
 		URL        string
 		ExpiryDate time.Time
@@ -56,6 +47,23 @@ func ShortenURL(c *gin.Context) {
 			"error": "Failed to bind URL to body.",
 		})
 		return
+	}
+
+	var maxURLS = false
+
+	if databaseQuery.RowsAffected >= maxAllowedURLS {
+		maxURLS = true
+	} else {
+		maxURLS = false
+	}
+
+	if u.Credit < 9 {
+		if maxURLS {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": "You have reached your maximum URLS! Delete some to get more, or buy some credit!",
+			})
+			return
+		}
 	}
 
 	fmt.Println(req.URL)
@@ -101,6 +109,15 @@ func ShortenURL(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "FAILED TO SHORTEN URL!",
 		})
+		return
+	}
+
+	if maxURLS {
+		u.Credit = u.Credit - 10
+	}
+
+	if err := initializers.DB.Model(&u).Update("credit", u.Credit).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update credit"})
 		return
 	}
 
