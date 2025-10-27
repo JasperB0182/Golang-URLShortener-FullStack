@@ -7,7 +7,7 @@
     <input *ngIf="(authService.isAdmin$ | async)" type="date" [(ngModel)]="expiryDate" name="expiryDate" [min]="tomorrow"> *datum is optioneel
     <button type="submit">Shorten</button>
     <p>{{newURLString}}</p>
-    <qrcode [qrdata]="urlCode" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+    <qrcode *ngIf="urlCode" [qrdata]="urlCode" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
     <p *ngIf="urlCode">Share with your friends!</p>
     <p class="ErrorMessage">{{Error}}</p>
   </form>
