@@ -17,7 +17,10 @@ export class ShortenerService {
 
   protected httpClient = inject(HttpClient)
 
-
+  disableAdminMultipleURL(Urls: string[]): Observable<any> {
+    return this.httpClient.put<URLResponse>("http://localhost:8080/admindisablemultipleurl", { codes: Urls },
+      { withCredentials: true });
+  }
 
   shorten(urlData: UrlModel): Observable<URLResponse> {
     return this.httpClient.post<URLResponse>("http://localhost:8080/shorten", urlData,

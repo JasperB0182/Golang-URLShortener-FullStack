@@ -1,8 +1,10 @@
 <body>
   <h1>Active URLs: <p class="message">{{ this.urlDisableMessage }}</p></h1>
+  <button *ngIf="urlsToDisable.length > 0" (click)="disableMultipleURLS()">Disable URLs</button>
   <table class="url-table">
     <thead>
     <tr>
+      <th></th>
       <th>Created by</th>
       <th>Short Code</th>
       <th>Full URL</th>
@@ -14,6 +16,7 @@
     </thead>
     <tbody>
     <tr *ngFor="let url of myURLS">
+      <td><input (change)="onCheckboxClick($event, url.ShortCode)" [checked]="urlsToDisable.includes(url.ShortCode)" type="checkbox"></td>
       <td>{{url.User.Email}}</td>
       <td>
         <a [href]="'http://localhost:4200/rd/' + url.ShortCode">http://localhost:4200/rd/{{ url.ShortCode }}</a>

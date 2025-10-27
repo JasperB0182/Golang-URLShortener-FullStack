@@ -1,5 +1,5 @@
 import {Component, inject, OnDestroy} from '@angular/core';
-import {DatePipe, NgForOf} from "@angular/common";
+import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {ShortenerService} from "../services/shortener-service.service";
 import {URLItem, URLListResponse} from "../models/URLlist-model";
 import {UsersResponse} from "../models/user-model";
@@ -8,10 +8,11 @@ import {interval, switchMap} from "rxjs";
 @Component({
   selector: 'app-admin-panel',
   standalone: true,
-    imports: [
-        DatePipe,
-        NgForOf
-    ],
+  imports: [
+    DatePipe,
+    NgForOf,
+    NgIf
+  ],
   templateUrl: './admin-panel.component.html',
   styleUrl: './admin-panel.component.scss'
 })
@@ -24,7 +25,31 @@ export class AdminPanelComponent implements OnDestroy{
   protected urlDisableMessage = ""
   protected userDisableMessage = ""
 
+  protected urlsToDisable : string[] = []
+
   private urlSub! : any;
+
+  protected onCheckboxClick(event : any, shortcode: string) {
+    if (event.target.checked){
+      this.urlsToDisable.push(shortcode)
+    } else {
+      this.urlsToDisable = this.urlsToDisable.filter(code => code !== shortcode);
+    }
+    console.log(this.urlsToDisable)
+  }
+
+  protected disableMultipleURLS() {
+    this.shortenerService.disableAdminMultipleURL(this.urlsToDisable).subscribe({
+      next: (res : any)=> {
+        this.refreshUrls()
+        this.urlsToDisable = []
+        alert("Successfully disabled urls!")
+      },
+      error: (err : any) => {
+        alert(err.error.error)
+      }
+    })
+  }
 
   constructor() {
     this.getUrls()
@@ -60,6 +85,7 @@ export class AdminPanelComponent implements OnDestroy{
       next: (res : any)=> {
         this.refreshUrls()
         this.urlDisableMessage = res.Message
+        this.urlsToDisable = []
       }
     })
   }
