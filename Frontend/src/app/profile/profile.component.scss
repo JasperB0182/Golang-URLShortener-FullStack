@@ -6,6 +6,15 @@ body {
   width: 30%;
 }
 
+.disable_url {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
 .url-table {
   width: 100%;
   border-collapse: collapse;

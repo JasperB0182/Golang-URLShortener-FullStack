@@ -39,7 +39,7 @@
       <td>{{ url.ExpiryDate | date}}</td>
       <td>{{ url.UsageCount }}</td>
       <td>
-          <button (click)="disableURL(url.ShortCode)">Disable</button>
+          <button class="disable_url" (click)="disableURL(url.ShortCode)">Disable</button>
       </td>
     </tr>
     </tbody>

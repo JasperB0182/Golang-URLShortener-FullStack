@@ -1,9 +1,9 @@
 <body>
   <h1>Active URLs: <p class="message">{{ this.urlDisableMessage }}</p></h1>
   <button *ngIf="urlsToDisable.length > 0" (click)="disableMultipleURLS()">Disable URLs</button>
-  <table class="url-table">
+  <table id="active-url" class="url-table">
     <thead>
-    <tr>
+    <tr >
       <th></th>
       <th>Created by</th>
       <th>Short Code</th>
@@ -31,7 +31,7 @@
     </tr>
     </tbody>
   </table><h1>Active accounts: <p class="message">{{ this.userDisableMessage }}</p></h1>
-  <table class="url-table">
+  <table id="active-user" class="url-table">
     <thead>
     <tr>
       <th>User ID</th>

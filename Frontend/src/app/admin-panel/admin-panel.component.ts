@@ -67,9 +67,7 @@ export class AdminPanelComponent implements OnDestroy{
   }
 
   protected getUrls(){
-    this.shortenerService.getAdminURLS().subscribe({
-      next: (res: URLListResponse) => (this.myURLS = res.Code)
-    });
+    this.refreshUrls()
 
     this.urlSub = interval(5000)
       .pipe(switchMap(() => this.shortenerService.getAdminURLS()))
@@ -94,7 +92,11 @@ export class AdminPanelComponent implements OnDestroy{
     this.shortenerService.disableAdminAccount(id).subscribe({
       next: (res : any)=> {
         this.getAccounts()
+        this.getUrls()
         this.userDisableMessage = res.Message
+      },
+      error: (err : any) => {
+        alert(err.error.Error)
       }
     })
   }

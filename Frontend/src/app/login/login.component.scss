@@ -12,6 +12,13 @@
   text-align: center;
 }
 
+.SuccessLogin {
+  color: green;
+}
+
+.ErrorLogin {
+  color: red;
+}
 
 .Login input[type="text"],
 .Login input[type="password"], {
@@ -44,21 +51,6 @@
 
 .Login button:hover {
   background-color: #357ABD;
-}
-
-
-.Login p {
-  font-size: 14px;
-  text-align: center;
-  margin: 0;
-}
-
-.Login p:nth-child(4) {
-  color: green;
-}
-
-.Login p:nth-child(5) {
-  color: red;
 }
 
 

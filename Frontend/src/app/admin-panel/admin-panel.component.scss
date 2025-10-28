@@ -21,7 +21,6 @@ body {
 }
 
 .url-table th {
-  background-color: #4CAF50;
   color: white;
   font-weight: bold;
 }
@@ -53,3 +52,19 @@ body {
   font-weight: bold;
 }
 
+button {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#active-url th {
+  background-color: #2c3e57;
+}
+
+#active-user th {
+  background-color: #4CAF50;
+}
