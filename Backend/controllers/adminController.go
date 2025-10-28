@@ -53,6 +53,18 @@ func AdminDeleteAccount(c *gin.Context) {
 	var u models.User
 	initializers.DB.First(&u, "id = ?", id)
 
+	result := initializers.DB.Where("user_id = ?", u.ID).Delete(&models.Url_mappings{})
+
+	if result.Error != nil {
+		fmt.Println(result.RowsAffected)
+
+		c.JSON(http.StatusBadRequest, gin.H{
+			"Error": "Couldn't delete user",
+		})
+		return
+
+	}
+
 	initializers.DB.Delete(&u, u.ID)
 	// DELETE FROM users WHERE id = 10;
 
