@@ -30,6 +30,26 @@ func Signup(c *gin.Context) {
 		return
 	}
 
+	if len(body.Name) < 2 || len(body.Password) < 2 {
+		c.JSON(400, gin.H{"error": "Name or password too short"})
+		return
+	}
+
+	_, newerr := mail.ParseAddress(body.Email)
+
+	if newerr != nil {
+		c.JSON(400, gin.H{"error": "Invalid email address"})
+		return
+	}
+
+	var checkuser models.User
+	res := initializers.DB.First(&checkuser, "email = ?", body.Email)
+
+	if res.RowsAffected > 0 {
+		c.JSON(400, gin.H{"error": "User with this email already exists"})
+		return
+	}
+
 	// HASH IT
 
 	hash, err := bcrypt.GenerateFromPassword([]byte(body.Password), 10)
