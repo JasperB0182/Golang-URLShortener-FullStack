@@ -34,7 +34,9 @@
       <td>
         <a [href]="'http://localhost:4200/rd/' + url.ShortCode">http://localhost:4200/rd/{{ url.ShortCode }}</a>
       </td>
-      <td><a href="{{ url.FullURL }}" target="_blank">{{ url.FullURL }}</a></td>
+      <td class="url-max">
+        <a href="{{ url.FullURL }}" target="_blank" class="url-link">{{ url.FullURL }}</a>
+      </td>
       <td>{{ url.CreatedAt | date}}</td>
       <td>{{ url.ExpiryDate | date}}</td>
       <td>{{ url.UsageCount }}</td>

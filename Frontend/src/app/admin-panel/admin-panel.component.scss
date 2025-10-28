@@ -61,6 +61,14 @@ button {
   cursor: pointer;
 }
 
+.url-link {
+  display: inline-block;
+  max-width: 400px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 #active-url th {
   background-color: #2c3e57;
 }

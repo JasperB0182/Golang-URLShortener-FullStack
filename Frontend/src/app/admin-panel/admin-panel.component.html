@@ -7,7 +7,7 @@
       <th></th>
       <th>Created by</th>
       <th>Short Code</th>
-      <th>Full URL</th>
+      <th class="url-max">Full URL</th>
       <th>Created At</th>
       <th>Expiry Date</th>
       <th>Usage count</th>
@@ -21,7 +21,9 @@
       <td>
         <a [href]="'http://localhost:4200/rd/' + url.ShortCode">http://localhost:4200/rd/{{ url.ShortCode }}</a>
       </td>
-      <td><a href="{{ url.FullURL }}" target="_blank">{{ url.FullURL }}</a></td>
+      <td class="url-max">
+        <a href="{{ url.FullURL }}" target="_blank" class="url-link">{{ url.FullURL }}</a>
+      </td>
       <td>{{ url.CreatedAt | date}}</td>
       <td>{{ url.ExpiryDate | date}}</td>
       <td>{{ url.UsageCount }}</td>
