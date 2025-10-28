@@ -11,6 +11,11 @@ body form {
   justify-self: center;
 }
 
+.unlimited {
+  display: flex;
+  flex-direction: row;
+}
+
 .Url-shortener {
   display: flex;
   flex-direction: column;

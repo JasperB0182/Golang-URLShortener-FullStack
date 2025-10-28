@@ -7,6 +7,7 @@ import {ProfileComponent} from "./profile/profile.component";
 import {authGuard} from "./guards/auth.guard";
 import {AdminPanelComponent} from "./admin-panel/admin-panel.component";
 import {adminGuard} from "./guards/admin.guard";
+import {CreditComponent} from "./credit/credit.component";
 
 export const routes: Routes = [
   {
@@ -28,6 +29,11 @@ export const routes: Routes = [
   {
     path:"profile",
     component: ProfileComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path:"credit",
+    component: CreditComponent,
     canActivate: [authGuard]
   },
   {

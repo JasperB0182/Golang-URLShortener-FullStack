@@ -73,5 +73,9 @@ func main() {
 	router.PUT("/admindisableurl/:id", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminDisableURL)
 	router.PUT("/admindisablemultipleurl", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminDisableMultipleURL)
 
+	router.PUT("/addtocredit", middleware.RequireAuth, controllers.AddToCredit)
+
+	router.GET("/getcredit", middleware.RequireAuth, controllers.GetCreditAndURLs)
+
 	router.Run() // listens on 0.0.0.0:8080 by default
 }

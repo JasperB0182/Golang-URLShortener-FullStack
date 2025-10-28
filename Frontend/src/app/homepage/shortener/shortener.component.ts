@@ -26,6 +26,10 @@ export class ShortenerComponent {
   protected urlCode = ""
   protected Error = ""
 
+  protected credit : any
+  protected activeUrls : any
+  protected usedCredit = false;
+
   protected shortenService = inject(ShortenerService)
   protected authService = inject(AuthService)
 
@@ -40,20 +44,40 @@ export class ShortenerComponent {
     const inamonth = new Date();
     inamonth.setMonth(inamonth.getMonth() + 1);
     this.inamonth = inamonth.toISOString().split('T')[0];
+
+    this.getValues()
+  }
+
+  protected onCheckBox(){
+
+  }
+
+  protected getValues(){
+    this.authService.getCreditAndUrls().subscribe({
+      next: (res) => {
+        this.credit = res.Credit
+        var active_url = 10 - res.activeUrls
+        if (active_url < 0){
+          active_url = 0
+        }
+        this.activeUrls = active_url
+      }
+    })
   }
 
   protected shortenURL(){
     this.Error = "";
     if (this.expiryDate){
       var expiry = new Date(this.expiryDate)
-      const shortenData = {URL: this.inputURL, ExpiryDate: expiry.toISOString()}
+      const shortenData = {URL: this.inputURL, ExpiryDate: expiry.toISOString(), usedCredits: this.usedCredit}
       this.shortenService.shorten(shortenData).subscribe({
         next: (res) =>{
           this.newURLString = "New URL: " + "http://localhost:4200/rd/" +  res.Code
           this.urlCode = "http://localhost:4200/rd/" + res.Code
+          this.getValues()
         },
         error: (error) => {
-          this.Error = error.statusText;
+          this.Error = error.error.error;
           this.newURLString = ""
           this.urlCode = ""
           console.log(this.Error)
@@ -65,6 +89,7 @@ export class ShortenerComponent {
         next: (res) =>{
           this.newURLString = "New URL code: " + "http://localhost:4200/rd/" +  res.Code
           this.urlCode = "http://localhost:4200/rd/" + res.Code
+          this.getValues()
         },
         error: (error) => {
           this.Error = error.error.error; //Ik weet het.... heel prachtig

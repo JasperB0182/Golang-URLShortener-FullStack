@@ -20,6 +20,13 @@ export class AuthService {
     this.checkLoginStatus();
   }
 
+  getCreditAndUrls(): Observable<any> {
+    return this.httpClient.get<any>(
+      "http://localhost:8080/getcredit",
+      { withCredentials: true }
+    )
+  }
+
   changeName(data : any): Observable<any> {
     return this.httpClient.put<any>(
       "http://localhost:8080/changename",
@@ -113,6 +120,14 @@ export class AuthService {
     return this.httpClient.get<any>("http://localhost:8080/admincheck", { withCredentials: true }).pipe(
       map(() => true),
       catchError(() => of(false))
+    );
+  }
+
+  addCredit(credit: number): Observable<any> {
+    return this.httpClient.put<any>(
+      'http://localhost:8080/addtocredit',
+      { addedCredit: credit },
+      { withCredentials: true }
     );
   }
 }

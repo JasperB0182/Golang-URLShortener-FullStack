@@ -41,7 +41,7 @@ func Signup(c *gin.Context) {
 	}
 
 	// CREATE USER
-	user := models.User{Email: body.Email, Password: string(hash), Name: body.Name, RoleID: 1}
+	user := models.User{Email: body.Email, Password: string(hash), Name: body.Name, RoleID: 1, Credit: 0}
 	result := initializers.DB.Create(&user)
 
 	if result.Error != nil {
@@ -259,5 +259,20 @@ func ChangePassword(c *gin.Context) {
 
 	u.Password = string(hash)
 	initializers.DB.Save(&u)
+
+}
+
+func GetCreditAndURLs(c *gin.Context) {
+	user, _ := c.Get("user")
+	u := user.(models.User)
+
+	var mappings []models.Url_mappings
+
+	databaseQuery := initializers.DB.Where("user_id = ? AND Enabled = ? AND expiry_date >= ?", u.ID, true, time.Now()).Find(&mappings)
+
+	c.JSON(http.StatusOK, gin.H{
+		"activeUrls": databaseQuery.RowsAffected,
+		"Credit":     u.Credit,
+	})
 
 }

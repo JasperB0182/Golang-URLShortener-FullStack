@@ -9,4 +9,5 @@ type User struct {
 	Name     string
 	RoleID   uint
 	UserRole UserRole `gorm:"foreignKey:RoleID;references:ID"`
+	Credit   float64
 }
