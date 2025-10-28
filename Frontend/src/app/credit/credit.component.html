@@ -1,0 +1,15 @@
+
+<h1>easter egg :)</h1>
+<body>
+  <select [(ngModel)]="selectedCredits">
+    <option *ngFor="let l of credits" [ngValue]="l">{{ l }}</option>
+  </select>
+
+  <button (click)="addCredit()">Send</button>
+
+</body>
+
+
+
+
+

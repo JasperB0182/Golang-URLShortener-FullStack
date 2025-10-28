@@ -4,6 +4,7 @@
     <li *ngIf="!(authService.isLoggedIn$ | async)" [routerLink]="['/login']">Login</li>
     <li *ngIf="!(authService.isLoggedIn$ | async)" [routerLink]="['/register']">Register</li>
     <li *ngIf="(authService.isAdmin$ | async)" [routerLink]="['/admin']">Admin paneel</li>
+    <li *ngIf="(authService.isLoggedIn$ | async)" [routerLink]="['/credit']">Koop credit</li>
     <li *ngIf="(authService.isLoggedIn$ | async)" [routerLink]="['/profile']">Profile</li>
     <li *ngIf="(authService.isLoggedIn$ | async)" (click)="authService.logout()">Logout</li>
 
