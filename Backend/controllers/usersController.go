@@ -261,3 +261,18 @@ func ChangePassword(c *gin.Context) {
 	initializers.DB.Save(&u)
 
 }
+
+func GetCreditAndURLs(c *gin.Context) {
+	user, _ := c.Get("user")
+	u := user.(models.User)
+
+	var mappings []models.Url_mappings
+
+	databaseQuery := initializers.DB.Where("user_id = ? AND Enabled = ? AND expiry_date >= ?", u.ID, true, time.Now()).Find(&mappings)
+
+	c.JSON(http.StatusOK, gin.H{
+		"activeUrls": databaseQuery.RowsAffected,
+		"Credit":     u.Credit,
+	})
+
+}

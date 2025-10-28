@@ -31,64 +31,50 @@ func ShortenURL(c *gin.Context) {
 	const maxAllowedURLS = 10
 
 	user, _ := c.Get("user")
-
 	u := user.(models.User)
 
 	var mappings []models.Url_mappings
-	databaseQuery := initializers.DB.Where("user_id = ? AND Enabled = ? AND expiry_date >= ?", u.ID, true, time.Now()).Find(&mappings)
+	databaseQuery := initializers.DB.Where(
+		"user_id = ? AND Enabled = ? AND expiry_date >= ?",
+		u.ID, true, time.Now(),
+	).Find(&mappings)
 
 	var req struct {
-		URL        string
-		ExpiryDate time.Time
+		URL         string    `json:"URL"`
+		ExpiryDate  time.Time `json:"ExpiryDate"`
+		UsedCredits bool      `json:"usedCredits"`
 	}
-
-	if c.BindJSON(&req) != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Failed to bind URL to body.",
-		})
+	if err := c.BindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to bind URL to body."})
 		return
 	}
 
-	var maxURLS = false
-
-	if databaseQuery.RowsAffected >= maxAllowedURLS {
-		maxURLS = true
-	} else {
-		maxURLS = false
+	if databaseQuery.RowsAffected >= maxAllowedURLS && u.Credit < 10 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "You have reached your maximum URLs! Delete some to get more, or buy some credit!",
+		})
+		return
 	}
-
-	if u.Credit < 9 {
-		if maxURLS {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"error": "You have reached your maximum URLS! Delete some to get more, or buy some credit!",
-			})
-			return
-		}
-	}
-
-	fmt.Println(req.URL)
 
 	check, err := url.ParseRequestURI(req.URL)
-
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Entered text is not a URL!",
-		})
-		return
-	}
-
-	if check == nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Check is empty.",
-		})
+	if err != nil || check == nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Entered text is not a valid URL."})
 		return
 	}
 
 	newURL := generateShortenedURL(8)
 
-	if u.ID == 1 {
-		if req.ExpiryDate.After(time.Now().AddDate(0, 1, 1)) {
-			req.ExpiryDate = time.Now().AddDate(0, 1, 0)
+	if req.UsedCredits {
+		if u.Credit < 10 {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Not enough credits!"})
+			return
+		}
+	} else {
+		if u.RoleID == 1 {
+			maxExpiry := time.Now().AddDate(0, 1, 0)
+			if req.ExpiryDate.After(maxExpiry) || req.ExpiryDate.IsZero() {
+				req.ExpiryDate = maxExpiry
+			}
 		}
 	}
 
@@ -98,22 +84,42 @@ func ShortenURL(c *gin.Context) {
 		} else {
 			req.ExpiryDate = time.Now().Add(time.Hour * 999999)
 		}
-
 	}
 
-	ShortenedURL := models.Url_mappings{UserID: u.ID, ShortCode: newURL, FullURL: req.URL, CreatedAt: time.Now(), Enabled: true, ExpiryDate: req.ExpiryDate, UsageCount: 0}
+	ShortenedURL := models.Url_mappings{
+		UserID:     u.ID,
+		ShortCode:  newURL,
+		FullURL:    req.URL,
+		CreatedAt:  time.Now(),
+		Enabled:    true,
+		ExpiryDate: req.ExpiryDate,
+		UsageCount: 0,
+	}
 
-	result := initializers.DB.Create(&ShortenedURL)
+	overMaxURLs := databaseQuery.RowsAffected >= maxAllowedURLS
 
-	if result.Error != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "FAILED TO SHORTEN URL!",
-		})
+	if u.RoleID != 2 {
+		var creditsNeeded float64 = 0
+
+		if overMaxURLs {
+			creditsNeeded += 10
+		}
+
+		if req.UsedCredits {
+			creditsNeeded += 10
+		}
+
+		if u.Credit < creditsNeeded {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Not enough credits!"})
+			return
+		}
+
+		u.Credit -= creditsNeeded
+	}
+
+	if err := initializers.DB.Create(&ShortenedURL).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "FAILED TO SHORTEN URL!"})
 		return
-	}
-
-	if maxURLS {
-		u.Credit = u.Credit - 10
 	}
 
 	if err := initializers.DB.Model(&u).Update("credit", u.Credit).Error; err != nil {
@@ -122,7 +128,7 @@ func ShortenURL(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"Success": "Succesfully shortened URL!",
+		"Success": "Successfully shortened URL!",
 		"Code":    newURL,
 	})
 }
