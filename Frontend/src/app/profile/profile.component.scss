@@ -7,12 +7,23 @@ body {
 }
 
 .disable_url {
-  background-color: red;
+  background-color: orange;
   color: white;
   border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
+  padding: 8px 16px;
+  border-radius: 6px;
   cursor: pointer;
+  font-weight: 500;
+}
+
+.enable_url {
+  background-color: #94c16b;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
 }
 
 .url-link {

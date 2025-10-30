@@ -48,6 +48,12 @@ export class ShortenerService {
       { withCredentials: true });
   }
 
+  enableURL(id: string) {
+    var APIlink = "http://localhost:8080/enable/" + id
+    return this.httpClient.put<any>(APIlink, {},
+      { withCredentials: true });
+  }
+
   disableAdminURL(id: string) {
     var APIlink = "http://localhost:8080/admindisableurl/" + id
     return this.httpClient.put<any>(APIlink, {},

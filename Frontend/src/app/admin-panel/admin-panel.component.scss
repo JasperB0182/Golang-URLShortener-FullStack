@@ -61,6 +61,16 @@ button {
   cursor: pointer;
 }
 
+.orange-button {
+  background-color: orange;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
 .url-link {
   display: inline-block;
   max-width: 400px;

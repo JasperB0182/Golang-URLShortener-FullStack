@@ -64,13 +64,14 @@ func main() {
 	router.GET("/getmyurls", middleware.RequireAuth, controllers.GetAllMyURLS)
 
 	router.PUT("/disable/:id", middleware.RequireAuth, controllers.DisableURL)
+	router.PUT("/enable/:id", middleware.RequireAuth, controllers.EnableURL)
 
 	router.GET("/admincheck", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminCheck)
 
 	router.GET("/getactive", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminSeeAllActiveURLS)
 	router.GET("/getusers", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminSeeAllUsers)
 	router.DELETE("/deleteaccountadmin/:id", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminDeleteAccount)
-	router.PUT("/admindisableurl/:id", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminDisableURL)
+	router.PUT("/admindisableurl/:id", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminDeleteURL)
 	router.PUT("/admindisablemultipleurl", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminDisableMultipleURL)
 
 	router.PUT("/addtocredit", middleware.RequireAuth, controllers.AddToCredit)

@@ -120,3 +120,16 @@
 [Oct 28, 2025 8:32pm] Admin admin3@mail.com has disabled URL with shortcode: stms8XuK
 [Oct 28, 2025 9:01pm] Admin admin3@mail.com has deleted account with ID: 12
 [Oct 30, 2025 2:20pm] Admin admin3@mail.com has deleted account with ID: 17
+[Oct 30, 2025 4:15pm] Admin admin3@mail.com has deleted account with ID: 27
+[Oct 30, 2025 4:27pm] Admin admin3@mail.com has disabled URL with shortcode: yXQhtkpd
+[Oct 30, 2025 4:29pm] Admin admin3@mail.com has disabled URL with shortcode: Q6sCQpuy
+[Oct 30, 2025 6:07pm] Admin admin3@mail.com has disabled URL with shortcode: UfZ08vmF
+[Oct 30, 2025 6:07pm] Admin admin3@mail.com has disabled URL with shortcode: 0oJbfSvG
+[Oct 30, 2025 6:08pm] Admin admin3@mail.com has disabled URL with shortcode: zLhnuo8I
+[Oct 30, 2025 6:08pm] Admin admin3@mail.com has disabled URL with shortcode: gxX6eiAN
+[Oct 30, 2025 6:08pm] Admin admin3@mail.com has disabled URL with shortcode: XspbhEhr
+[Oct 30, 2025 6:08pm] Admin admin3@mail.com has disabled URL with shortcode: kq9FxZI4
+[Oct 30, 2025 6:08pm] Admin admin3@mail.com has disabled URL with shortcode: 7Js68s3Y
+[Oct 30, 2025 6:08pm] Admin admin3@mail.com has disabled URL with shortcode: AckQPuJX
+[Oct 30, 2025 6:08pm] Admin admin3@mail.com has disabled URL with shortcode: LP6fKhIw
+[Oct 30, 2025 6:08pm] Admin admin3@mail.com has disabled URL with shortcode: mQgjQJpe

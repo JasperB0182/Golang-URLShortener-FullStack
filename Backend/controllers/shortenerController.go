@@ -212,17 +212,82 @@ func DisableURL(c *gin.Context) {
 
 }
 
-func GetAllMyURLS(c *gin.Context) {
+func EnableURL(c *gin.Context) {
+	id := c.Param("id")
+
 	user, _ := c.Get("user")
 
 	u := user.(models.User)
 
 	var mappings []models.Url_mappings
+	databaseQuery := initializers.DB.Where(
+		"user_id = ? AND Enabled = ? AND expiry_date >= ?",
+		u.ID, true, time.Now(),
+	).Find(&mappings)
+
+	if databaseQuery.RowsAffected >= 10 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "You have reached your max amount of links!",
+		})
+		return
+	}
+
+	var url_mapping models.Url_mappings
+	initializers.DB.First(&url_mapping, "Short_Code = ?", id)
+
+	if url_mapping.ID == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "URL is not yours, doesn't exist or is already enabled.",
+		})
+		return
+	}
+
+	if u.ID == url_mapping.UserID {
+		if url_mapping.Enabled {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": "URL is not yours, doesn't exist or is already enabled.",
+			})
+			return
+		}
+
+		url_mapping.Enabled = true
+		initializers.DB.Save(url_mapping)
+		c.JSON(http.StatusOK, gin.H{
+			"Message": "Succesfully enabled the URL!",
+		})
+
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "URL is not yours, doesn't exist or is already enabled.",
+		})
+		return
+	}
+
+}
+
+func GetAllMyURLS(c *gin.Context) {
+	user, _ := c.Get("user")
+
+	u := user.(models.User)
+
+	var checkmappings []models.Url_mappings
+	databaseQuery := initializers.DB.Where(
+		"user_id = ? AND Enabled = ? AND expiry_date >= ?",
+		u.ID, true, time.Now(),
+	).Find(&checkmappings)
+
+	var mappings []models.Url_mappings
 	err := initializers.DB.Where("Enabled = ? AND user_id = ? AND expiry_date > ?", true, u.ID, time.Now()).Find(&mappings)
 	fmt.Println(err)
 
+	var mappings2 []models.Url_mappings
+	hi := initializers.DB.Where("Enabled = ? AND user_id = ? AND expiry_date > ?", false, u.ID, time.Now()).Find(&mappings2)
+	fmt.Println(hi)
+
 	c.JSON(http.StatusOK, gin.H{
-		"Code": mappings,
+		"Code":         mappings,
+		"Disabledcode": mappings2,
+		"AmountOfURLs": databaseQuery.RowsAffected,
 	})
 
 }

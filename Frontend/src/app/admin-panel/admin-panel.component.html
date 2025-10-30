@@ -1,7 +1,13 @@
 <body>
   <h1>Active URLs: <p class="message">{{ this.urlDisableMessage }}</p></h1>
-  <button *ngIf="urlsToDisable.length > 0" (click)="disableMultipleURLS()">Disable URLs</button>
-  <table id="active-url" class="url-table">
+  <button
+    id="hallo"
+    *ngIf="urlsToDisable.length > 0"
+    (click)="disableMultipleURLS()"
+    class="orange-button"
+  >
+    Disable URLs
+  </button>  <table id="active-url" class="url-table">
     <thead>
     <tr >
       <th></th>
@@ -11,7 +17,7 @@
       <th>Created At</th>
       <th>Expiry Date</th>
       <th>Usage count</th>
-      <th>Enabled?</th>
+      <th>Delete</th>
     </tr>
     </thead>
     <tbody>
@@ -28,7 +34,7 @@
       <td>{{ url.ExpiryDate | date}}</td>
       <td>{{ url.UsageCount }}</td>
       <td>
-        <button (click)="disableURL(url.ShortCode)">Disable</button>
+        <button (click)="disableURL(url.ShortCode)">Delete</button>
       </td>
     </tr>
     </tbody>
