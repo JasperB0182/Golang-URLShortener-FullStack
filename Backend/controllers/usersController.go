@@ -58,6 +58,7 @@ func Signup(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "FAILED PASSWORD HASH!",
 		})
+		return
 	}
 
 	// CREATE USER
@@ -68,6 +69,7 @@ func Signup(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "FAILED TO CREATE USER!",
 		})
+		return
 	}
 
 	var newuser models.User

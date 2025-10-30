@@ -119,3 +119,4 @@
 [Oct 28, 2025 8:32pm] Admin admin3@mail.com has disabled URL with shortcode: 5Nrtk1AR
 [Oct 28, 2025 8:32pm] Admin admin3@mail.com has disabled URL with shortcode: stms8XuK
 [Oct 28, 2025 9:01pm] Admin admin3@mail.com has deleted account with ID: 12
+[Oct 30, 2025 2:20pm] Admin admin3@mail.com has deleted account with ID: 17
