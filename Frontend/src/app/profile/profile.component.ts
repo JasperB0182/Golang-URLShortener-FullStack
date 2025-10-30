@@ -20,6 +20,8 @@ export class ProfileComponent {
   protected authService = inject(AuthService)
 
   protected myURLS: URLItem[] = [];
+  protected myDisabledURLS: URLItem[] = [];
+  protected myAmountOfURLs : any
   protected userinfo : any
 
 
@@ -134,8 +136,11 @@ export class ProfileComponent {
 
   protected getUrls(){
     this.shortenerService.getMyURLS().subscribe({
-      next: (res: URLListResponse) => {
+      next: (res: any) => {
         this.myURLS = res.Code;
+        this.myDisabledURLS = res.Disabledcode;
+        this.myAmountOfURLs = res.AmountOfURLs;
+        console.log(this.myDisabledURLS)
       }
     });
   }
@@ -144,6 +149,20 @@ export class ProfileComponent {
     this.shortenerService.disableURL(id).subscribe({
       next: (res : any)=> {
         this.getUrls()
+      },
+      error: (error : any) => {
+        alert(error.error.error)
+      }
+    })
+  }
+
+  protected enableURL(id: string){
+    this.shortenerService.enableURL(id).subscribe({
+      next: (res : any)=> {
+        this.getUrls()
+      },
+      error: (err : any) => {
+        alert(err.error.error)
       }
     })
   }
