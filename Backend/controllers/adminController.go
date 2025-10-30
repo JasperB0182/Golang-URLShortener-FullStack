@@ -89,7 +89,7 @@ func AdminDeleteAccount(c *gin.Context) {
 
 }
 
-func AdminDisableURL(c *gin.Context) {
+func AdminDeleteURL(c *gin.Context) {
 	id := c.Param("id")
 	user, _ := c.Get("user")
 
@@ -100,20 +100,19 @@ func AdminDisableURL(c *gin.Context) {
 
 	if url_mapping.ID == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Doesn't exist or is already disabled.",
+			"error": "Doesn't exist or is already deleted.",
 		})
 		return
 	}
 
 	if !url_mapping.Enabled {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Doesn't exist or is already disabled.",
+			"error": "Doesn't exist or is already deleted.",
 		})
 		return
 	}
 
-	url_mapping.Enabled = false
-	initializers.DB.Save(url_mapping)
+	initializers.DB.Delete(url_mapping)
 
 	LogFile, err := os.OpenFile("logs.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 
@@ -124,7 +123,7 @@ func AdminDisableURL(c *gin.Context) {
 	LogFile.WriteString("[" + time.Now().Format("Jan 2, 2006 3:04pm") + "] " + "Admin " + u.Email + " has disabled URL with shortcode: " + id + "\n")
 
 	c.JSON(http.StatusOK, gin.H{
-		"Message": "Succesfully disabled the URL permanently!",
+		"Message": "Succesfully deleted the URL permanently!",
 	})
 }
 
