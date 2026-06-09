@@ -3,13 +3,12 @@ import {ShortenerComponent} from "./shortener/shortener.component";
 import {NavbarComponent} from "../navbar/navbar.component";
 
 @Component({
-  selector: 'app-homepage',
-  standalone: true,
-  imports: [
-    ShortenerComponent
-  ],
-  templateUrl: './homepage.component.html',
-  styleUrl: './homepage.component.scss'
+    selector: 'app-homepage',
+    imports: [
+        ShortenerComponent
+    ],
+    templateUrl: './homepage.component.html',
+    styleUrl: './homepage.component.scss'
 })
 export class HomepageComponent {
 

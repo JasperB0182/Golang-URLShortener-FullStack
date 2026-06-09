@@ -4,14 +4,13 @@ import {NgForOf} from "@angular/common";
 import {AuthService} from "../services/auth.service";
 
 @Component({
-  selector: 'app-credit',
-  standalone: true,
-  imports: [
-    FormsModule,
-    NgForOf
-  ],
-  templateUrl: './credit.component.html',
-  styleUrl: './credit.component.scss'
+    selector: 'app-credit',
+    imports: [
+        FormsModule,
+        NgForOf
+    ],
+    templateUrl: './credit.component.html',
+    styleUrl: './credit.component.scss'
 })
 export class CreditComponent {
 

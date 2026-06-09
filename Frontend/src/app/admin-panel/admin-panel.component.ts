@@ -6,15 +6,14 @@ import {UsersResponse} from "../models/user-model";
 import {interval, switchMap} from "rxjs";
 
 @Component({
-  selector: 'app-admin-panel',
-  standalone: true,
-  imports: [
-    DatePipe,
-    NgForOf,
-    NgIf
-  ],
-  templateUrl: './admin-panel.component.html',
-  styleUrl: './admin-panel.component.scss'
+    selector: 'app-admin-panel',
+    imports: [
+        DatePipe,
+        NgForOf,
+        NgIf
+    ],
+    templateUrl: './admin-panel.component.html',
+    styleUrl: './admin-panel.component.scss'
 })
 export class AdminPanelComponent implements OnDestroy{
   protected shortenerService = inject(ShortenerService)

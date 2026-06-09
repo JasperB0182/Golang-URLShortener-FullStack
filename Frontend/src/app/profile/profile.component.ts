@@ -6,14 +6,13 @@ import {AuthService} from "../services/auth.service";
 import {RouterLink} from "@angular/router";
 
 @Component({
-  selector: 'app-profile',
-  standalone: true,
-  imports: [
-    NgForOf,
-    DatePipe,
-  ],
-  templateUrl: './profile.component.html',
-  styleUrl: './profile.component.scss'
+    selector: 'app-profile',
+    imports: [
+        NgForOf,
+        DatePipe,
+    ],
+    templateUrl: './profile.component.html',
+    styleUrl: './profile.component.scss'
 })
 export class ProfileComponent {
   protected shortenerService = inject(ShortenerService)
