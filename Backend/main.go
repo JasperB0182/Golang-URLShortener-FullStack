@@ -36,7 +36,7 @@ func main() {
 	}
 
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:4200"},
+		AllowOrigins:     []string{os.Getenv("CORS")},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
@@ -50,33 +50,35 @@ func main() {
 		})
 	})
 
-	router.POST("/signup", controllers.Signup)
-	router.POST("/login", controllers.Login)
-	router.POST("/logout", middleware.RequireAuth, controllers.Logout)
-	router.GET("/validate", middleware.RequireAuth, controllers.Validate)
-	router.POST("/shorten", middleware.RequireAuth, controllers.ShortenURL)
-	router.DELETE("/deleteaccount", middleware.RequireAuth, controllers.DeleteAccount)
-	router.PUT("/changename", middleware.RequireAuth, controllers.ChangeName)
-	router.PUT("/changeemail", middleware.RequireAuth, controllers.ChangeEmail)
-	router.PUT("/changepassword", middleware.RequireAuth, controllers.ChangePassword)
+	api := router.Group("/api")
+	{
+		api.POST("/signup", controllers.Signup)
+		api.POST("/login", controllers.Login)
+		api.POST("/logout", middleware.RequireAuth, controllers.Logout)
+		api.GET("/validate", middleware.RequireAuth, controllers.Validate)
+		api.POST("/shorten", middleware.RequireAuth, controllers.ShortenURL)
+		api.DELETE("/deleteaccount", middleware.RequireAuth, controllers.DeleteAccount)
+		api.PUT("/changename", middleware.RequireAuth, controllers.ChangeName)
+		api.PUT("/changeemail", middleware.RequireAuth, controllers.ChangeEmail)
+		api.PUT("/changepassword", middleware.RequireAuth, controllers.ChangePassword)
 
-	router.GET("/link/:id", controllers.GetOriginalURL)
-	router.GET("/getmyurls", middleware.RequireAuth, controllers.GetAllMyURLS)
+		api.GET("/link/:id", controllers.GetOriginalURL)
+		api.GET("/getmyurls", middleware.RequireAuth, controllers.GetAllMyURLS)
 
-	router.PUT("/disable/:id", middleware.RequireAuth, controllers.DisableURL)
-	router.PUT("/enable/:id", middleware.RequireAuth, controllers.EnableURL)
+		api.PUT("/disable/:id", middleware.RequireAuth, controllers.DisableURL)
+		api.PUT("/enable/:id", middleware.RequireAuth, controllers.EnableURL)
 
-	router.GET("/admincheck", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminCheck)
+		api.GET("/admincheck", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminCheck)
 
-	router.GET("/getactive", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminSeeAllActiveURLS)
-	router.GET("/getusers", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminSeeAllUsers)
-	router.DELETE("/deleteaccountadmin/:id", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminDeleteAccount)
-	router.PUT("/admindisableurl/:id", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminDeleteURL)
-	router.PUT("/admindisablemultipleurl", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminDisableMultipleURL)
+		api.GET("/getactive", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminSeeAllActiveURLS)
+		api.GET("/getusers", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminSeeAllUsers)
+		api.DELETE("/deleteaccountadmin/:id", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminDeleteAccount)
+		api.PUT("/admindisableurl/:id", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminDeleteURL)
+		api.PUT("/admindisablemultipleurl", middleware.RequireAuth, middleware.RequireAdmin, controllers.AdminDisableMultipleURL)
 
-	router.PUT("/addtocredit", middleware.RequireAuth, controllers.AddToCredit)
-
-	router.GET("/getcredit", middleware.RequireAuth, controllers.GetCreditAndURLs)
+		api.PUT("/addtocredit", middleware.RequireAuth, controllers.AddToCredit)
+		api.GET("/getcredit", middleware.RequireAuth, controllers.GetCreditAndURLs)
+	}
 
 	router.Run() // listens on 0.0.0.0:8080 by default
 }

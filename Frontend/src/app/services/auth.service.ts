@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import {LoginModel} from "../models/login-model";
 import {BehaviorSubject, catchError, Observable, of, tap} from "rxjs";
 import {map} from "rxjs/operators";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -22,14 +23,14 @@ export class AuthService {
 
   getCreditAndUrls(): Observable<any> {
     return this.httpClient.get<any>(
-      "http://localhost:8080/getcredit",
+      `${environment.apiUrl}/getcredit`,
       { withCredentials: true }
     )
   }
 
   changeName(data : any): Observable<any> {
     return this.httpClient.put<any>(
-      "http://localhost:8080/changename",
+      `${environment.apiUrl}/changename`,
       data,
       { withCredentials: true }
     )
@@ -37,7 +38,7 @@ export class AuthService {
 
   changeEmail(data : any): Observable<any> {
     return this.httpClient.put<any>(
-      "http://localhost:8080/changeemail",
+      `${environment.apiUrl}/changeemail`,
       data,
       { withCredentials: true }
     )
@@ -45,7 +46,7 @@ export class AuthService {
 
   changePassword(data : any): Observable<any> {
     return this.httpClient.put<any>(
-      "http://localhost:8080/changepassword",
+      `${environment.apiUrl}/changepassword`,
       data,
       { withCredentials: true }
     )
@@ -53,7 +54,7 @@ export class AuthService {
 
   login(logindata: LoginModel): Observable<any> {
     return this.httpClient.post<any>(
-      "http://localhost:8080/login",
+      `${environment.apiUrl}/login`,
       logindata,
       { withCredentials: true }
     ).pipe(
@@ -65,7 +66,7 @@ export class AuthService {
 
   register(registerdata: LoginModel): Observable<any> {
     return this.httpClient.post<any>(
-      "http://localhost:8080/signup",
+      `${environment.apiUrl}/signup`,
       registerdata,
       { withCredentials: true }
     ).pipe(
@@ -77,14 +78,14 @@ export class AuthService {
 
   getuserInfo(): Observable<any> {
     return this.httpClient.get<any>(
-      "http://localhost:8080/validate",
+      `${environment.apiUrl}/validate`,
       { withCredentials: true }
     )
   }
 
   checkLoginStatus(): void {
     this.httpClient.get<any>(
-      "http://localhost:8080/validate",
+      `${environment.apiUrl}/validate`,
       { withCredentials: true }
     ).subscribe({
       next: () => this.loggedIn.next(true),
@@ -92,7 +93,7 @@ export class AuthService {
     });
 
     this.httpClient.get<any>(
-      "http://localhost:8080/admincheck",
+      `${environment.apiUrl}/admincheck`,
       { withCredentials: true }
     ).subscribe({
       next: () => this.admin.next(true),
@@ -102,7 +103,7 @@ export class AuthService {
 
   logout(): void {
     this.httpClient.post<any>(
-      "http://localhost:8080/logout", {},
+      `${environment.apiUrl}/logout`, {},
       { withCredentials: true }
     ).subscribe({
       next: () => {
@@ -117,7 +118,7 @@ export class AuthService {
   }
 
   checkAdminStatus(): Observable<boolean> {
-    return this.httpClient.get<any>("http://localhost:8080/admincheck", { withCredentials: true }).pipe(
+    return this.httpClient.get<any>(`${environment.apiUrl}/admincheck`, { withCredentials: true }).pipe(
       map(() => true),
       catchError(() => of(false))
     );
@@ -125,7 +126,7 @@ export class AuthService {
 
   addCredit(credit: number): Observable<any> {
     return this.httpClient.put<any>(
-      'http://localhost:8080/addtocredit',
+      `${environment.apiUrl}/addtocredit`,
       { addedCredit: credit },
       { withCredentials: true }
     );

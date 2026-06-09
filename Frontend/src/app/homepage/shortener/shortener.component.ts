@@ -4,6 +4,7 @@ import {ShortenerService} from "../../services/shortener-service.service";
 import {AuthService} from "../../services/auth.service";
 import { AsyncPipe } from "@angular/common";
 import { QRCodeComponent } from "angularx-qrcode";
+import {environment} from "../../../environments/environment";
 
 @Component({
     selector: 'app-shortener',
@@ -71,8 +72,8 @@ export class ShortenerComponent {
       const shortenData = {URL: this.inputURL, ExpiryDate: expiry.toISOString(), usedCredits: this.usedCredit}
       this.shortenService.shorten(shortenData).subscribe({
         next: (res) =>{
-          this.newURLString = "New URL: " + "http://localhost:4200/rd/" +  res.Code
-          this.urlCode = "http://localhost:4200/rd/" + res.Code
+          this.newURLString = "New URL: " + `${environment.websiteUrl}/rd/` +  res.Code
+          this.urlCode = `${environment.websiteUrl}/rd/` + res.Code
           this.getValues()
         },
         error: (error) => {
@@ -86,8 +87,8 @@ export class ShortenerComponent {
       const shortenData = {URL: this.inputURL}
       this.shortenService.shorten(shortenData).subscribe({
         next: (res) =>{
-          this.newURLString = "New URL code: " + "http://localhost:4200/rd/" +  res.Code
-          this.urlCode = "http://localhost:4200/rd/" + res.Code
+          this.newURLString = "New URL code: " + `${environment.websiteUrl}/rd/` +  res.Code
+          this.urlCode = `${environment.websiteUrl}/rd/` + res.Code
           this.getValues()
         },
         error: (error) => {
