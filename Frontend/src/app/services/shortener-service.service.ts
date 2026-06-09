@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {UrlModel} from "../models/url-model";
-import {HttpClient} from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import {URLResponse} from "../models/url-response";
 import {Observable} from "rxjs";
 import {URLListResponse} from "../models/URLlist-model";
