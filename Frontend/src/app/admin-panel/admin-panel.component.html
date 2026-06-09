@@ -1,68 +1,73 @@
 <body>
   <h1>Active URLs: <p class="message">{{ this.urlDisableMessage }}</p></h1>
-  <button
-    id="hallo"
-    *ngIf="urlsToDisable.length > 0"
-    (click)="disableMultipleURLS()"
-    class="orange-button"
-  >
-    Disable URLs
-  </button>  <table id="active-url" class="url-table">
+  @if (urlsToDisable.length > 0) {
+    <button
+      id="hallo"
+      (click)="disableMultipleURLS()"
+      class="orange-button"
+      >
+      Disable URLs
+    </button>
+    }  <table id="active-url" class="url-table">
     <thead>
-    <tr >
-      <th></th>
-      <th>Created by</th>
-      <th>Short Code</th>
-      <th class="url-max">Full URL</th>
-      <th>Created At</th>
-      <th>Expiry Date</th>
-      <th>Usage count</th>
-      <th>Delete</th>
-    </tr>
+      <tr >
+        <th></th>
+        <th>Created by</th>
+        <th>Short Code</th>
+        <th class="url-max">Full URL</th>
+        <th>Created At</th>
+        <th>Expiry Date</th>
+        <th>Usage count</th>
+        <th>Delete</th>
+      </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let url of myURLS">
-      <td><input (change)="onCheckboxClick($event, url.ShortCode)" [checked]="urlsToDisable.includes(url.ShortCode)" type="checkbox"></td>
-      <td>{{url.User.Email}}</td>
-      <td>
-        <a [href]="'http://localhost:4200/rd/' + url.ShortCode">http://localhost:4200/rd/{{ url.ShortCode }}</a>
-      </td>
-      <td class="url-max">
-        <a href="{{ url.FullURL }}" target="_blank" class="url-link">{{ url.FullURL }}</a>
-      </td>
-      <td>{{ url.CreatedAt | date}}</td>
-      <td>{{ url.ExpiryDate | date}}</td>
-      <td>{{ url.UsageCount }}</td>
-      <td>
-        <button (click)="disableURL(url.ShortCode)">Delete</button>
-      </td>
-    </tr>
+      @for (url of myURLS; track url) {
+        <tr>
+          <td><input (change)="onCheckboxClick($event, url.ShortCode)" [checked]="urlsToDisable.includes(url.ShortCode)" type="checkbox"></td>
+          <td>{{url.User.Email}}</td>
+          <td>
+            <a [href]="'http://localhost:4200/rd/' + url.ShortCode">http://localhost:4200/rd/{{ url.ShortCode }}</a>
+          </td>
+          <td class="url-max">
+            <a href="{{ url.FullURL }}" target="_blank" class="url-link">{{ url.FullURL }}</a>
+          </td>
+          <td>{{ url.CreatedAt | date}}</td>
+          <td>{{ url.ExpiryDate | date}}</td>
+          <td>{{ url.UsageCount }}</td>
+          <td>
+            <button (click)="disableURL(url.ShortCode)">Delete</button>
+          </td>
+        </tr>
+      }
     </tbody>
-  </table><h1>Active accounts: <p class="message">{{ this.userDisableMessage }}</p></h1>
-  <table id="active-user" class="url-table">
-    <thead>
-    <tr>
-      <th>User ID</th>
-      <th>Email</th>
-      <th>Created At</th>
-      <th>Name</th>
-      <th>Role</th>
-      <th>Disable account</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let user of myAccounts.Users">
-      <td>{{user.ID}}</td>
-      <td>
-        {{user.Email}}
-      </td>
-      <td>{{ user.CreatedAt | date}}</td>
-      <td>{{user.Name}}</td>
-      <td>{{user.UserRole.Role}}</td>
-      <td>
-        <button (click)="disableAccountAdmin(String(user.ID))">Disable Account</button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-</body>
+    </table><h1>Active accounts: <p class="message">{{ this.userDisableMessage }}</p></h1>
+    <table id="active-user" class="url-table">
+      <thead>
+        <tr>
+          <th>User ID</th>
+          <th>Email</th>
+          <th>Created At</th>
+          <th>Name</th>
+          <th>Role</th>
+          <th>Disable account</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (user of myAccounts.Users; track user) {
+          <tr>
+            <td>{{user.ID}}</td>
+            <td>
+              {{user.Email}}
+            </td>
+            <td>{{ user.CreatedAt | date}}</td>
+            <td>{{user.Name}}</td>
+            <td>{{user.UserRole.Role}}</td>
+            <td>
+              <button (click)="disableAccountAdmin(String(user.ID))">Disable Account</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </body>

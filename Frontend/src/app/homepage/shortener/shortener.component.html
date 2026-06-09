@@ -3,32 +3,38 @@
   <form class="Url-shortener" (ngSubmit)="shortenURL()">
     <h1>URL shortener</h1>
     <input type="text" placeholder="Voer hier uw URL in" [(ngModel)]="inputURL" name="url" pattern="https://.*" required>
-    <input
-      *ngIf="!(authService.isAdmin$ | async) && !usedCredit"
-      type="date"
-      [(ngModel)]="expiryDate"
-      name="expiryDate"
-      [max]="inamonth"
-      [min]="tomorrow"
-    />
+    @if (!(authService.isAdmin$ | async) && !usedCredit) {
+      <input
+        type="date"
+        [(ngModel)]="expiryDate"
+        name="expiryDate"
+        [max]="inamonth"
+        [min]="tomorrow"
+        />
+    }
 
     <!-- Less restricted input: admin OR usedCredit selected -->
-    <input
-      *ngIf="(authService.isAdmin$ | async) || usedCredit"
-      type="date"
-      [(ngModel)]="expiryDate"
-      name="expiryDate"
-      [min]="tomorrow"
-    />
+    @if ((authService.isAdmin$ | async) || usedCredit) {
+      <input
+        type="date"
+        [(ngModel)]="expiryDate"
+        name="expiryDate"
+        [min]="tomorrow"
+        />
+    }
     <div class="unlimited">
       <input type="checkbox" [(ngModel)]="usedCredit" name="usedCredit">
       <p>Use 10$ credits for unlimited date!</p>
     </div>
     <button type="submit">Shorten <p>Credit over: ${{this.credit}}</p>
-      <p>Urls over: {{this.activeUrls}}/10</p></button>
+    <p>Urls over: {{this.activeUrls}}/10</p></button>
     <p>{{newURLString}}</p>
-    <qrcode *ngIf="urlCode" [qrdata]="urlCode" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
-    <p *ngIf="urlCode">Share with your friends!</p>
+    @if (urlCode) {
+      <qrcode [qrdata]="urlCode" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+    }
+    @if (urlCode) {
+      <p>Share with your friends!</p>
+    }
     <p class="ErrorMessage">{{Error}}</p>
   </form>
 </body>

@@ -1,15 +1,14 @@
 import {Component, inject} from '@angular/core';
 import {RouterLink} from "@angular/router";
 import {AuthService} from "../services/auth.service";
-import {AsyncPipe, NgIf} from "@angular/common";
+import { AsyncPipe } from "@angular/common";
 
 @Component({
   selector: 'app-navbar',
   imports: [
     RouterLink,
-    NgIf,
     AsyncPipe
-  ],
+],
   templateUrl: './navbar.component.html',
   standalone: true,
   styleUrl: './navbar.component.scss'

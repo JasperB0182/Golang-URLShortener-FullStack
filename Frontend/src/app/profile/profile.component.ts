@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core';
-import {DatePipe, NgForOf} from "@angular/common";
+import { DatePipe } from "@angular/common";
 import {ShortenerService} from "../services/shortener-service.service";
 import {URLItem, URLListResponse} from "../models/URLlist-model";
 import {AuthService} from "../services/auth.service";
@@ -9,9 +9,8 @@ import {RouterLink} from "@angular/router";
     selector: 'app-profile',
     standalone: true,
     imports: [
-        NgForOf,
-        DatePipe,
-    ],
+    DatePipe
+],
     templateUrl: './profile.component.html',
     styleUrl: './profile.component.scss'
 })

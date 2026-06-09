@@ -2,77 +2,81 @@
   <h1>My info:</h1>
   <table class="url-table" width="20px" id="user-info">
     <thead>
-    <tr>
-    </tr>
+      <tr>
+      </tr>
     </thead>
     <tbody>
-    <tr>
-      <td>Email: {{this.userinfo.Email}} <button (click)="changeEmail()">Change email</button></td>
-    </tr>
-    <tr>
-      <td>Name: {{this.userinfo.Name}} <button (click)="changeName()">Change name</button></td>
-    </tr>
-    <tr>
-      <td>Password: *** <button  (click)="changePassword()">Change password</button></td>
-    </tr>
+      <tr>
+        <td>Email: {{this.userinfo.Email}} <button (click)="changeEmail()">Change email</button></td>
+      </tr>
+      <tr>
+        <td>Name: {{this.userinfo.Name}} <button (click)="changeName()">Change name</button></td>
+      </tr>
+      <tr>
+        <td>Password: *** <button  (click)="changePassword()">Change password</button></td>
+      </tr>
     </tbody>
   </table>
   <h1>My active URLs: {{myAmountOfURLs}}/10</h1><p>* Deactivated urls can not be used again as an extra slot</p>
   <table class="url-table">
     <thead>
-    <tr>
-      <th>Short Code</th>
-      <th>Full URL</th>
-      <th>Created At</th>
-      <th>Expiry Date</th>
-      <th>Usage Count</th>
-      <th>Disable</th>
-    </tr>
+      <tr>
+        <th>Short Code</th>
+        <th>Full URL</th>
+        <th>Created At</th>
+        <th>Expiry Date</th>
+        <th>Usage Count</th>
+        <th>Disable</th>
+      </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let url of myURLS">
-      <td>
-        <a [href]="'http://localhost:4200/rd/' + url.ShortCode">http://localhost:4200/rd/{{ url.ShortCode }}</a>
-      </td>
-      <td class="url-max">
-        <a href="{{ url.FullURL }}" target="_blank" class="url-link">{{ url.FullURL }}</a>
-      </td>
-      <td>{{ url.CreatedAt | date}}</td>
-      <td>{{ url.ExpiryDate | date}}</td>
-      <td>{{ url.UsageCount }}</td>
-      <td>
-          <button class="disable_url" (click)="disableURL(url.ShortCode)">Disable</button>
-      </td>
-    </tr>
+      @for (url of myURLS; track url) {
+        <tr>
+          <td>
+            <a [href]="'http://localhost:4200/rd/' + url.ShortCode">http://localhost:4200/rd/{{ url.ShortCode }}</a>
+          </td>
+          <td class="url-max">
+            <a href="{{ url.FullURL }}" target="_blank" class="url-link">{{ url.FullURL }}</a>
+          </td>
+          <td>{{ url.CreatedAt | date}}</td>
+          <td>{{ url.ExpiryDate | date}}</td>
+          <td>{{ url.UsageCount }}</td>
+          <td>
+            <button class="disable_url" (click)="disableURL(url.ShortCode)">Disable</button>
+          </td>
+        </tr>
+      }
     </tbody>
   </table>
   <h1>My disabled URLs:</h1>
   <table class="url-table">
     <thead>
-    <tr>
-      <th>Short Code</th>
-      <th>Full URL</th>
-      <th>Created At</th>
-      <th>Expiry Date</th>
-      <th>Usage Count</th>
-      <th>Disable</th>
-    </tr>
+      <tr>
+        <th>Short Code</th>
+        <th>Full URL</th>
+        <th>Created At</th>
+        <th>Expiry Date</th>
+        <th>Usage Count</th>
+        <th>Disable</th>
+      </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let url of myDisabledURLS">
-      <td>
-        <a [href]="'http://localhost:4200/rd/' + url.ShortCode">http://localhost:4200/rd/{{ url.ShortCode }}</a>
-      </td>
-      <td class="url-max">
-        <a href="{{ url.FullURL }}" target="_blank" class="url-link">{{ url.FullURL }}</a>
-      </td>
-      <td>{{ url.CreatedAt | date}}</td>
-      <td>{{ url.ExpiryDate | date}}</td>
-      <td>{{ url.UsageCount }}</td>
-      <td>
-        <button class="enable_url" (click)="enableURL(url.ShortCode)">Enable</button>
-      </td>
-    </tr>
+      @for (url of myDisabledURLS; track url) {
+        <tr>
+          <td>
+            <a [href]="'http://localhost:4200/rd/' + url.ShortCode">http://localhost:4200/rd/{{ url.ShortCode }}</a>
+          </td>
+          <td class="url-max">
+            <a href="{{ url.FullURL }}" target="_blank" class="url-link">{{ url.FullURL }}</a>
+          </td>
+          <td>{{ url.CreatedAt | date}}</td>
+          <td>{{ url.ExpiryDate | date}}</td>
+          <td>{{ url.UsageCount }}</td>
+          <td>
+            <button class="enable_url" (click)="enableURL(url.ShortCode)">Enable</button>
+          </td>
+        </tr>
+      }
     </tbody>
   </table>
 </body>

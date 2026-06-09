@@ -1,5 +1,5 @@
 import {Component, inject, OnDestroy} from '@angular/core';
-import {DatePipe, NgForOf, NgIf} from "@angular/common";
+import { DatePipe } from "@angular/common";
 import {ShortenerService} from "../services/shortener-service.service";
 import {URLItem, URLListResponse} from "../models/URLlist-model";
 import {UsersResponse} from "../models/user-model";
@@ -9,10 +9,8 @@ import {interval, switchMap} from "rxjs";
     selector: 'app-admin-panel',
     standalone: true,
     imports: [
-        DatePipe,
-        NgForOf,
-        NgIf
-    ],
+    DatePipe
+],
     templateUrl: './admin-panel.component.html',
     styleUrl: './admin-panel.component.scss'
 })

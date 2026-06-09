@@ -1,12 +1,24 @@
 <header>
   <img  [routerLink]="['/']" src="https://img.freepik.com/vrije-vector/vogel-kleurrijke-logo-verloop-vector_343694-1365.jpg?semt=ais_hybrid&w=740&q=80">
   <ul>
-    <li *ngIf="!(authService.isLoggedIn$ | async)" [routerLink]="['/login']">Login</li>
-    <li *ngIf="!(authService.isLoggedIn$ | async)" [routerLink]="['/register']">Register</li>
-    <li *ngIf="(authService.isAdmin$ | async)" [routerLink]="['/admin']">Admin paneel</li>
-    <li *ngIf="(authService.isLoggedIn$ | async)" [routerLink]="['/credit']">Koop credit</li>
-    <li *ngIf="(authService.isLoggedIn$ | async)" [routerLink]="['/profile']">Profile</li>
-    <li *ngIf="(authService.isLoggedIn$ | async)" (click)="authService.logout()">Logout</li>
+    @if (!(authService.isLoggedIn$ | async)) {
+      <li [routerLink]="['/login']">Login</li>
+    }
+    @if (!(authService.isLoggedIn$ | async)) {
+      <li [routerLink]="['/register']">Register</li>
+    }
+    @if ((authService.isAdmin$ | async)) {
+      <li [routerLink]="['/admin']">Admin paneel</li>
+    }
+    @if ((authService.isLoggedIn$ | async)) {
+      <li [routerLink]="['/credit']">Koop credit</li>
+    }
+    @if ((authService.isLoggedIn$ | async)) {
+      <li [routerLink]="['/profile']">Profile</li>
+    }
+    @if ((authService.isLoggedIn$ | async)) {
+      <li (click)="authService.logout()">Logout</li>
+    }
 
   </ul>
 </header>

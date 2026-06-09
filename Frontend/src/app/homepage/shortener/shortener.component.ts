@@ -2,18 +2,17 @@ import {Component, inject} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {ShortenerService} from "../../services/shortener-service.service";
 import {AuthService} from "../../services/auth.service";
-import {AsyncPipe, NgIf} from "@angular/common";
+import { AsyncPipe } from "@angular/common";
 import { QRCodeComponent } from "angularx-qrcode";
 
 @Component({
     selector: 'app-shortener',
     standalone: true,
     imports: [
-        FormsModule,
-        NgIf,
-        AsyncPipe,
-      QRCodeComponent
-    ],
+    FormsModule,
+    AsyncPipe,
+    QRCodeComponent
+],
     templateUrl: './shortener.component.html',
     styleUrls: ['./shortener.component.scss']
 })

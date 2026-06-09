@@ -1,15 +1,14 @@
 import {Component, inject} from '@angular/core';
 import {FormsModule} from "@angular/forms";
-import {NgForOf} from "@angular/common";
+
 import {AuthService} from "../services/auth.service";
 
 @Component({
     selector: 'app-credit',
     standalone: true,
     imports: [
-        FormsModule,
-        NgForOf
-    ],
+    FormsModule
+],
     templateUrl: './credit.component.html',
     styleUrl: './credit.component.scss'
 })
