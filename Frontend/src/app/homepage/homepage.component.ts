@@ -4,6 +4,7 @@ import {NavbarComponent} from "../navbar/navbar.component";
 
 @Component({
     selector: 'app-homepage',
+    standalone: true,
     imports: [
         ShortenerComponent
     ],

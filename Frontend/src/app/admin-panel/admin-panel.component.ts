@@ -7,6 +7,7 @@ import {interval, switchMap} from "rxjs";
 
 @Component({
     selector: 'app-admin-panel',
+    standalone: true,
     imports: [
         DatePipe,
         NgForOf,

@@ -7,6 +7,7 @@ import {RouterLink} from "@angular/router";
 
 @Component({
     selector: 'app-profile',
+    standalone: true,
     imports: [
         NgForOf,
         DatePipe,

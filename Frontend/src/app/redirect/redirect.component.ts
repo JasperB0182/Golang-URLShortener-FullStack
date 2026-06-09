@@ -5,6 +5,7 @@ import {NgIf} from "@angular/common";
 
 @Component({
     selector: 'app-redirect',
+    standalone: true,
     imports: [
         RouterLink,
         NgIf

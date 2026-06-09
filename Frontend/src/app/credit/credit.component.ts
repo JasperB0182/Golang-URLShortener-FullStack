@@ -5,6 +5,7 @@ import {AuthService} from "../services/auth.service";
 
 @Component({
     selector: 'app-credit',
+    standalone: true,
     imports: [
         FormsModule,
         NgForOf
