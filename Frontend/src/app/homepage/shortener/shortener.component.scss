@@ -1,5 +1,5 @@
 * {
-  font-family: Arial;
+  font-family: Arial, serif;
 }
 
 body form {
@@ -81,7 +81,15 @@ body form {
   margin: 5px 0 0;
 }
 
+@media (max-width: 600px) {
+  body form {
+    width: 90%;
+    margin-top: 7rem;
+  }
 
-
-
-
+  .Url-shortener {
+    width: 100%;
+    margin: 20px auto;
+    padding: 16px;
+  }
+}

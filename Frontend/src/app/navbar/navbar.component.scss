@@ -43,3 +43,23 @@ header li:hover {
   background-color: navajowhite;
   color: black;
 }
+
+@media (max-width: 600px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 16px;
+    gap: 8px;
+  }
+
+  header ul {
+    flex-wrap: wrap;
+    gap: 6px;
+    width: 100%;
+  }
+
+  header li {
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+}

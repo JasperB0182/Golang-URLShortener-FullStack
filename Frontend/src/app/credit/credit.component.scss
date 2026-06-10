@@ -42,3 +42,14 @@ button {
   font-size: 16px;
   cursor: pointer;
 }
+
+@media (max-width: 600px) {
+  :host {
+    width: 90%;
+    margin: 0 auto;
+  }
+
+  select, button {
+    width: 100%;
+  }
+}

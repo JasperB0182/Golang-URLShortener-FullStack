@@ -86,3 +86,52 @@ button {
 #active-user th {
   background-color: #4CAF50;
 }
+
+@media (max-width: 600px) {
+  body {
+    margin-top: 8rem;
+  }
+
+  .url-table, .url-table thead, .url-table tbody,
+  .url-table th, .url-table td, .url-table tr {
+    display: block;
+  }
+
+  .url-table thead {
+    display: none;
+  }
+
+  .url-table tr {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    padding: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+
+  .url-table td {
+    border: none;
+    padding: 6px 8px;
+    font-size: 13px;
+    position: relative;
+    padding-left: 40%;
+  }
+
+  .url-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 8px;
+    font-weight: bold;
+    color: #555;
+    white-space: nowrap;
+  }
+
+  .url-link {
+    max-width: 160px;
+  }
+
+  button, .orange-button {
+    width: 100%;
+    margin-top: 4px;
+  }
+}

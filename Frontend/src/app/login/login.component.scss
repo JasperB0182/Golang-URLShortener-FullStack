@@ -58,3 +58,10 @@
   color: #aaa;
   font-style: italic;
 }
+
+@media (max-width: 600px) {
+  .Login {
+    margin: 40px 16px;
+    padding: 24px 20px;
+  }
+}
