@@ -13,7 +13,7 @@ import {AuthService} from "../services/auth.service";
     templateUrl: './register.component.html',
     styleUrl: './register.component.scss'
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent{
   protected registerService = inject(AuthService)
   protected Email = ""
   protected Password = ""
@@ -27,11 +27,7 @@ export class RegisterComponent implements OnInit {
     return new Promise<void>((resolve) => setTimeout(resolve, ms));
   }
 
-  ngOnInit(): void {
-    if (this.registerService.isLoggedIn$) {
-      this.router.navigate(['/'])
-    }
-  }
+
 
   protected register(){
     const register = {Name: this.Name, Email: this.Email, Password: this.Password}

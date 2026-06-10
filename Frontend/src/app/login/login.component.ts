@@ -13,13 +13,7 @@ import {AuthService} from "../services/auth.service";
     templateUrl: './login.component.html',
     styleUrl: './login.component.scss'
 })
-export class LoginComponent implements OnInit {
-
-  ngOnInit(): void {
-      if (this.loginService.isLoggedIn$) {
-        this.router.navigate(['/'])
-      }
-  }
+export class LoginComponent{
 
   protected loginService = inject(AuthService)
   protected Email = ""
