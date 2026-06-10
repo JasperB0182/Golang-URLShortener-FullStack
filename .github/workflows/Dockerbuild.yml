@@ -1,0 +1,45 @@
+name: Auto-docker deploy
+
+on:
+  push:
+    branches: ["master"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        run: docker login -u s1155772 -p ${{ secrets.DOCKER_HUB_TOKEN }}
+
+      - name: Build frontend image
+        run: docker build -t s1155772/golang-shortener:latest Frontend
+
+      - name: Push frontend image
+        run: docker push s1155772/golang-shortener:latest
+
+      - name: Build backend image
+        run: docker build -t s1155772/golang-shortener-backend:latest Backend
+
+      - name: Push backend image
+        run: docker push s1155772/golang-shortener-backend:latest
+
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to VPS via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd /opt/shortener
+            docker compose pull
+            docker compose up -d
