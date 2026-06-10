@@ -4,6 +4,7 @@ import {ShortenerService} from "../services/shortener-service.service";
 import {URLItem, URLListResponse} from "../models/URLlist-model";
 import {UsersResponse} from "../models/user-model";
 import {interval, switchMap} from "rxjs";
+import {environment} from "../../environments/environment";
 
 @Component({
     selector: 'app-admin-panel',
@@ -38,7 +39,7 @@ export class AdminPanelComponent implements OnDestroy{
 
   protected disableMultipleURLS() {
     this.shortenerService.disableAdminMultipleURL(this.urlsToDisable).subscribe({
-      next: (res : any)=> {
+      next: ()=> {
         this.refreshUrls()
         this.urlsToDisable = []
         alert("Successfully disabled urls!")
@@ -108,4 +109,5 @@ export class AdminPanelComponent implements OnDestroy{
   }
 
   protected readonly String = String;
+  protected readonly environment = environment;
 }

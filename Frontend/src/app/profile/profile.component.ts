@@ -1,9 +1,9 @@
 import {Component, inject} from '@angular/core';
 import { DatePipe } from "@angular/common";
 import {ShortenerService} from "../services/shortener-service.service";
-import {URLItem, URLListResponse} from "../models/URLlist-model";
+import {URLItem} from "../models/URLlist-model";
 import {AuthService} from "../services/auth.service";
-import {RouterLink} from "@angular/router";
+import {environment} from "../../environments/environment";
 
 @Component({
     selector: 'app-profile',
@@ -47,7 +47,7 @@ export class ProfileComponent {
 
 
     this.authService.changeName(completeNewName).subscribe({
-      next: (res: any) => {
+      next: () => {
         alert("Succesfully changed name!")
         this.getUserInfo()
       },
@@ -78,7 +78,7 @@ export class ProfileComponent {
 
 
     this.authService.changeEmail(completeNewEmail).subscribe({
-      next: (res: any) => {
+      next: () => {
         alert("Succesfully changed Email!")
         this.getUserInfo()
       },
@@ -113,7 +113,7 @@ export class ProfileComponent {
 
 
     this.authService.changePassword(completeNewPassword).subscribe({
-      next: (res: any) => {
+      next: () => {
         alert("Succesfully changed password!")
         this.getUserInfo()
       },
@@ -146,7 +146,7 @@ export class ProfileComponent {
 
   protected disableURL(id: string){
     this.shortenerService.disableURL(id).subscribe({
-      next: (res : any)=> {
+      next: ()=> {
         this.getUrls()
       },
       error: (error : any) => {
@@ -157,7 +157,7 @@ export class ProfileComponent {
 
   protected enableURL(id: string){
     this.shortenerService.enableURL(id).subscribe({
-      next: (res : any)=> {
+      next: ()=> {
         this.getUrls()
       },
       error: (err : any) => {
@@ -165,4 +165,6 @@ export class ProfileComponent {
       }
     })
   }
+
+  protected readonly environment = environment;
 }

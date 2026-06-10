@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {Router} from "@angular/router";
 import {AuthService} from "../services/auth.service";
@@ -13,7 +13,7 @@ import {AuthService} from "../services/auth.service";
     templateUrl: './register.component.html',
     styleUrl: './register.component.scss'
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   protected registerService = inject(AuthService)
   protected Email = ""
   protected Password = ""
@@ -27,10 +27,16 @@ export class RegisterComponent {
     return new Promise<void>((resolve) => setTimeout(resolve, ms));
   }
 
+  ngOnInit(): void {
+    if (this.registerService.isLoggedIn$) {
+      this.router.navigate(['/'])
+    }
+  }
+
   protected register(){
     const register = {Name: this.Name, Email: this.Email, Password: this.Password}
     this.registerService.register(register).subscribe({
-      next: async (res) => {
+      next: async () => {
         this.SuccessLogin = "Succesfully signed up and logged in!"
         await this.pause(1000)
         this.router.navigate(['/'])

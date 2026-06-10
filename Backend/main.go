@@ -22,6 +22,11 @@ func init() {
 }
 
 func main() {
+	if os.Getenv("GIN_MODE") == "" {
+		gin.SetMode("release")
+	} else {
+		gin.SetMode(os.Getenv("GIN_MODE"))
+	}
 	router := gin.Default()
 	router.Use(middleware.RateLimiter())
 
@@ -80,5 +85,10 @@ func main() {
 		api.GET("/getcredit", middleware.RequireAuth, controllers.GetCreditAndURLs)
 	}
 
-	router.Run() // listens on 0.0.0.0:8080 by default
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8081"
+	}
+
+	router.Run(":" + port)
 }

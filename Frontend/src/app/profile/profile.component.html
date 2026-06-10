@@ -1,6 +1,6 @@
 <body>
   <h1>My info:</h1>
-  <table class="url-table" width="20px" id="user-info">
+  <table class="url-table" id="user-info">
     <thead>
       <tr>
       </tr>
@@ -33,7 +33,7 @@
       @for (url of myURLS; track url) {
         <tr>
           <td>
-            <a [href]="'http://localhost:4200/rd/' + url.ShortCode">http://localhost:4200/rd/{{ url.ShortCode }}</a>
+            <a [href]="environment.websiteUrl + '/rd/' + url.ShortCode">{{environment.websiteUrl}}/rd/{{ url.ShortCode }}</a>
           </td>
           <td class="url-max">
             <a href="{{ url.FullURL }}" target="_blank" class="url-link">{{ url.FullURL }}</a>
@@ -64,7 +64,7 @@
       @for (url of myDisabledURLS; track url) {
         <tr>
           <td>
-            <a [href]="'http://localhost:4200/rd/' + url.ShortCode">http://localhost:4200/rd/{{ url.ShortCode }}</a>
+            <a [href]="environment.websiteUrl + '/rd/' + url.ShortCode">{{environment.websiteUrl}}/rd/{{ url.ShortCode }}</a>
           </td>
           <td class="url-max">
             <a href="{{ url.FullURL }}" target="_blank" class="url-link">{{ url.FullURL }}</a>

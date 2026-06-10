@@ -1,6 +1,6 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {Router, RouterLink} from "@angular/router";
+import {Router} from "@angular/router";
 import {AuthService} from "../services/auth.service";
 
 @Component({
@@ -13,7 +13,14 @@ import {AuthService} from "../services/auth.service";
     templateUrl: './login.component.html',
     styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
+
+  ngOnInit(): void {
+      if (this.loginService.isLoggedIn$) {
+        this.router.navigate(['/'])
+      }
+  }
+
   protected loginService = inject(AuthService)
   protected Email = ""
   protected Password = ""
@@ -29,7 +36,7 @@ export class LoginComponent {
   protected login(){
     const loginData = {Email: this.Email, Password: this.Password}
     this.loginService.login(loginData).subscribe({
-      next: async (res) => {
+      next: async () => {
         this.SuccessLogin = "Succesfully logged in!"
         await this.pause(1000)
         this.router.navigate(['/'])
