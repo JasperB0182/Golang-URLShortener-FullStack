@@ -164,8 +164,13 @@ func AdminCheck(c *gin.Context) {
 func Validate(c *gin.Context) {
 	user, _ := c.Get("user")
 
+	u := user.(models.User)
+
 	c.JSON(http.StatusOK, gin.H{
-		"user": user,
+		"user": gin.H{
+			"Name":  u.Name,
+			"Email": u.Email,
+		},
 	})
 }
 
