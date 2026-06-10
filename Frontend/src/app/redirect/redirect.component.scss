@@ -1,14 +1,20 @@
 * {
-  font-family: Arial;
+  font-family: Arial, serif;
+}
+
+body {
+  margin: 0;
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
 body form {
   margin: 0;
-  margin-top: 10rem;
+  margin-top: 2rem;
   display: flex;
   flex-direction: column;
-  width: 50%;
-  justify-self: center;
+  width: min(100%, 400px);
+  margin-inline: auto;
 }
 
 .Url-shortener {
@@ -16,10 +22,12 @@ body form {
   flex-direction: column;
   align-items: center;
   gap: 15px;
-  width: 300px;
-  margin: 50px auto;
+  width: min(100%, 300px);
+  margin-top: clamp(2rem, 10vw, 200px);
+  margin-inline: auto;
   padding: 20px;
   background-color: #f9f9f9;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
 }

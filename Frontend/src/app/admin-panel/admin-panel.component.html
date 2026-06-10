@@ -1,73 +1,85 @@
-<body>
-  <h1>Active URLs: <p class="message">{{ this.urlDisableMessage }}</p></h1>
-  @if (urlsToDisable.length > 0) {
-    <button
-      id="hallo"
-      (click)="disableMultipleURLS()"
-      class="orange-button"
-      >
-      Disable URLs
-    </button>
-    }  <table id="active-url" class="url-table">
-    <thead>
-      <tr >
-        <th></th>
-        <th>Created by</th>
-        <th>Short Code</th>
-        <th class="url-max">Full URL</th>
-        <th>Created At</th>
-        <th>Expiry Date</th>
-        <th>Usage count</th>
-        <th>Delete</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (url of myURLS; track url) {
-        <tr>
-          <td><input (change)="onCheckboxClick($event, url.ShortCode)" [checked]="urlsToDisable.includes(url.ShortCode)" type="checkbox"></td>
-          <td>{{url.User.Email}}</td>
-          <td>
-            <a [href]="environment.websiteUrl + '/rd/' + url.ShortCode">{{environment.websiteUrl}}/rd/{{ url.ShortCode }}</a>
-          </td>
-          <td class="url-max">
-            <a href="{{ url.FullURL }}" target="_blank" class="url-link">{{ url.FullURL }}</a>
-          </td>
-          <td>{{ url.CreatedAt | date}}</td>
-          <td>{{ url.ExpiryDate | date}}</td>
-          <td>{{ url.UsageCount }}</td>
-          <td>
-            <button (click)="disableURL(url.ShortCode)">Delete</button>
-          </td>
-        </tr>
-      }
-    </tbody>
-    </table><h1>Active accounts: <p class="message">{{ this.userDisableMessage }}</p></h1>
-    <table id="active-user" class="url-table">
-      <thead>
-        <tr>
-          <th>User ID</th>
-          <th>Email</th>
-          <th>Created At</th>
-          <th>Name</th>
-          <th>Role</th>
-          <th>Disable account</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (user of myAccounts.Users; track user) {
-          <tr>
-            <td>{{user.ID}}</td>
-            <td>
-              {{user.Email}}
-            </td>
-            <td>{{ user.CreatedAt | date}}</td>
-            <td>{{user.Name}}</td>
-            <td>{{user.UserRole.Role}}</td>
-            <td>
-              <button (click)="disableAccountAdmin(String(user.ID))">Disable Account</button>
-            </td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  </body>
+<div class="page">
+
+  <!-- Active URLs -->
+  <div class="section-header">
+    <p class="section-title">Active URLs</p>
+    <span class="status-msg">{{ urlDisableMessage }}</span>
+    @if (urlsToDisable.length > 0) {
+      <button class="btn-bulk" (click)="disableMultipleURLS()">
+        Disable selected ({{ urlsToDisable.length }})
+      </button>
+    }
+  </div>
+  <p class="url-note">Select rows with the checkbox, then use "Disable selected" to batch-disable</p>
+
+  <div class="url-table-wrap">
+    <div class="url-row url-row--url header blue-head">
+      <div class="url-cell"></div>
+      <div class="url-cell">Created by</div>
+      <div class="url-cell">Short link</div>
+      <div class="url-cell">Destination</div>
+      <div class="url-cell">Created</div>
+      <div class="url-cell">Expires</div>
+      <div class="url-cell">Hits</div>
+      <div class="url-cell">Delete</div>
+    </div>
+    @for (url of myURLS; track url) {
+      <div class="url-row url-row--url" [class.url-row--checked]="urlsToDisable.includes(url.ShortCode)">
+        <div class="url-cell">
+          <input type="checkbox"
+                 [checked]="urlsToDisable.includes(url.ShortCode)"
+                 (change)="onCheckboxClick($event, url.ShortCode)">
+        </div>
+        <div class="url-cell"><span class="email-val">{{ url.User.Email }}</span></div>
+        <div class="url-cell">
+          <a class="short-link" [href]="environment.websiteUrl + '/rd/' + url.ShortCode">
+            {{ environment.websiteUrl }}/rd/{{ url.ShortCode }}
+          </a>
+        </div>
+        <div class="url-cell">
+          <a class="full-link" [href]="url.FullURL" target="_blank">{{ url.FullURL }}</a>
+        </div>
+        <div class="url-cell"><span class="date-val">{{ url.CreatedAt | date }}</span></div>
+        <div class="url-cell"><span class="date-val">{{ url.ExpiryDate | date }}</span></div>
+        <div class="url-cell"><span class="usage-badge">{{ url.UsageCount }}</span></div>
+        <div class="url-cell">
+          <button class="btn-delete" (click)="disableURL(url.ShortCode)">Delete</button>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Active Accounts -->
+  <div class="section-header">
+    <p class="section-title">Active accounts</p>
+    <span class="status-msg">{{ userDisableMessage }}</span>
+  </div>
+
+  <div class="url-table-wrap">
+    <div class="url-row url-row--user header green-head">
+      <div class="url-cell">ID</div>
+      <div class="url-cell">Email</div>
+      <div class="url-cell">Created</div>
+      <div class="url-cell">Name</div>
+      <div class="url-cell">Role</div>
+      <div class="url-cell">Action</div>
+    </div>
+    @for (user of myAccounts.Users; track user) {
+      <div class="url-row url-row--user">
+        <div class="url-cell"><span class="id-val">#{{ user.ID }}</span></div>
+        <div class="url-cell"><span class="email-val">{{ user.Email }}</span></div>
+        <div class="url-cell"><span class="date-val">{{ user.CreatedAt | date }}</span></div>
+        <div class="url-cell"><span class="name-val">{{ user.Name }}</span></div>
+        <div class="url-cell">
+          <span class="role-pill" [class.admin]="user.UserRole.Role === 'Admin'">
+            {{ user.UserRole.Role }}
+          </span>
+        </div>
+        <div class="url-cell">
+          <button class="btn-disable" (click)="disableAccountAdmin(String(user.ID))">Disable</button>
+        </div>
+      </div>
+    }
+  </div>
+
+</div>
